@@ -10,6 +10,10 @@ import org.junit.runner.RunWith;
 
 import android.support.test.rule.ActivityTestRule;
 
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.*;
 
 /**
@@ -21,13 +25,14 @@ import static org.junit.Assert.*;
 public class ExampleInstrumentedTest {
     @Rule
     public ActivityTestRule<MainActivity> activityTestRule
-            = new ActivityTestRule<>(MainActivity.class, true, false);
+            = new ActivityTestRule<>(MainActivity.class, true, true);
 
     @Test
-    public void useAppContext() {
+    public void testForHelloWorld() throws InterruptedException {
         // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
+        onView(withId(R.id.helloWorldText))
+                .check(matches(withText("Hello World!")));
 
-        assertEquals("com.example.idea", appContext.getPackageName());
+        Thread.sleep(2000);
     }
 }
