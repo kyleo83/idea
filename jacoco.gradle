@@ -9,6 +9,7 @@ def coverageSourceDirs = [
 
 tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true
+    jacoco.destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
 }
 
 task jacocoTestReport(type : JacocoReport, dependsOn : 'testDebugUnitTest') {
