@@ -11,16 +11,19 @@ tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
+task jacocoTestReport(type : JacocoReport, dependsOn : 'testDebugUnitTest') {
     group       = 'Reporting'
     description = 'Generate JaCoCo coverage reports'
 
     reports {
-        xml.enabled = true
+        xml.enabled  = true
         html.enabled = true
     }
 
-    def fileFilter = ['**/R.class',
+    classDirectories = fileTree(
+            dir      : 'build/intermediates/classes/debug',
+            excludes : [
+                    '**/R.class',
                     '**/R$*.class',
                     '**/*$ViewInjector*.*',
                     '**/*$ViewBinder*.*',
@@ -34,15 +37,15 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
                     '**/*Module_Provide*Factory.*',
                     '**/*_Factory.*',
                     '**/*_MembersInjector.*',
-                    '**/*_LifecycleAdapter.*']
-    def debugTree = fileTree(dir: "$project.buildDir/intermediates/classes/debug", excludes: fileFilter)
-    def mainSrc = "$project.projectDir/src/main/java"
+                    '**/*_LifecycleAdapter.*'
+            ]
+    )
 
-    sourceDirectories = files([mainSrc])
-    classDirectories = files([debugTree])
-    executionData = fileTree(dir: project.buildDir, includes: [
-            'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*.ec'
-    ])
+    sourceDirectories = files(coverageSourceDirs)
+    executionData     = fileTree(
+            dir     : "$buildDir",
+            include : [ 'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec' ]
+    )
 
     doFirst {
         files('build/intermediates/classes/debug').getFiles().each { file ->
