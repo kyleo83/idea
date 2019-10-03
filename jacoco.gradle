@@ -1,6 +1,6 @@
 apply plugin: 'jacoco'
 jacoco {
-    toolVersion = "0.7.9"
+    toolVersion = "0.8.4"
 }
 def coverageSourceDirs = [
         'src/main/java',
@@ -41,7 +41,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
     sourceDirectories = files([mainSrc])
     classDirectories = files([debugTree])
     executionData = fileTree(dir: project.buildDir, includes: [
-            'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
+            'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*.ec'
     ])
 
     doFirst {
