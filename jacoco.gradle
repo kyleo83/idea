@@ -1,6 +1,6 @@
 apply plugin: 'jacoco'
 jacoco {
-    toolVersion = "0.7.9"
+    toolVersion = "0.8.4"
 }
 def coverageSourceDirs = [
         'src/main/java',
@@ -9,6 +9,7 @@ def coverageSourceDirs = [
 
 tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true
+    jacoco.destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
 }
 
 task jacocoTestReport(type : JacocoReport, dependsOn : 'testDebugUnitTest') {
@@ -38,6 +39,52 @@ task jacocoTestReport(type : JacocoReport, dependsOn : 'testDebugUnitTest') {
                     '**/*_Factory.*',
                     '**/*_MembersInjector.*',
                     '**/*_LifecycleAdapter.*'
+            ]
+    )
+
+    sourceDirectories = files(coverageSourceDirs)
+    executionData     = fileTree(
+            dir     : "$buildDir",
+            include : [ 'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec' ]
+    )
+
+    doFirst {
+        files('build/intermediates/classes/debug').getFiles().each { file ->
+            if (file.name.contains('$$')) {
+                file.renameTo(file.path.replace('$$', '$'))
+            }
+        }
+    }
+}
+
+task jacocoTestReportLocal(type : JacocoReport, dependsOn : ['testDebugUnitTest', 'createDebugCoverageReport']) {
+    group       = 'Reporting'
+    description = 'Generate JaCoCo coverage reports'
+
+    reports {
+        xml.enabled  = true
+        html.enabled = true
+    }
+
+    classDirectories = fileTree(
+            dir      : 'build/intermediates/classes/debug',
+            excludes : [
+                    '**/R.class',
+                    '**/R$*.class',
+                    '**/*$ViewInjector*.*',
+                    '**/*$ViewBinder*.*',
+                    '**/BuildConfig.*',
+                    '**/Manifest*.*',
+                    '**/*RealmProxy.*',
+                    '**/*ColumnInfo.*',
+                    '**/*RealmModule*.*',
+                    '**/AutoValue_*.*',
+                    '**/Dagger*.*',
+                    '**/*Module_Provide*Factory.*',
+                    '**/*_Factory.*',
+                    '**/*_MembersInjector.*',
+                    '**/*_LifecycleAdapter.*',
+                    '**/models/**'
             ]
     )
 
