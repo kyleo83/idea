@@ -1,6 +1,6 @@
 apply plugin: 'jacoco'
 jacoco {
-    toolVersion = "0.7.9"
+    toolVersion = "0.8.4"
 }
 def coverageSourceDirs = [
         'src/main/java',
@@ -12,7 +12,7 @@ tasks.withType(Test) {
     jacoco.destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
 }
 
-task jacocoTestReport(type : JacocoReport, dependsOn : 'testDebugUnitTest') {
+task jacocoTestReport(type : JacocoReport, dependsOn : ['testDebugUnitTest']) {
     group       = 'Reporting'
     description = 'Generate JaCoCo coverage reports'
 
@@ -38,7 +38,8 @@ task jacocoTestReport(type : JacocoReport, dependsOn : 'testDebugUnitTest') {
                     '**/*Module_Provide*Factory.*',
                     '**/*_Factory.*',
                     '**/*_MembersInjector.*',
-                    '**/*_LifecycleAdapter.*'
+                    '**/*_LifecycleAdapter.*',
+                    '**/models/**'
             ]
     )
 
