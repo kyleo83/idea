@@ -27,12 +27,4 @@ public class ExampleInstrumentedTest {
     public ActivityTestRule<MainActivity> activityTestRule
             = new ActivityTestRule<>(MainActivity.class, true, true);
 
-    @Test
-    public void testForHelloWorld() throws InterruptedException {
-        // Context of the app under test.
-        onView(withId(R.id.helloWorldText))
-                .check(matches(withText("Hello World!")));
-
-        Thread.sleep(2000);
-    }
 }
