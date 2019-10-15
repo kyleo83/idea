@@ -1,0 +1,59 @@
+{
+    "users": {
+        "user1": {
+            "display_name": "pookie",
+            "seen": {
+                "idea1": "liked",
+                "idea2": "disliked",
+                "idea3": "liked"
+            }            
+        },
+        "user2": {
+            "display_name": "igor",
+            "seen": {
+                "idea1": "disliked",
+                "idea2": "disliked",
+                "idea3": "liked"
+            }                 
+        }
+    },
+    "ideas": {
+        "idea1": {
+            "tags": ["tag1"],
+            "picture_id": "picture01"
+        },
+        "idea2": {
+            "tags": ["tag1", "tag2"],
+            "picture_id": "picture02"
+        },
+        "idea3": {
+            "tags": ["tag3"],
+            "picture_id": "picture03"
+        }
+    },
+    "tags": {
+        "tag1": {
+            "name": "kitchen",
+            "type": "indoor"
+        },
+        "tag2": {
+            "name": "patio",
+            "type": "outdoor"
+        },
+        "tag3": {
+            "name": "bathroom",
+            "type": "indoor"
+        }
+    },
+    "pictures": {
+        "picture01": {
+            "url": "www.example.com/p01"
+        },
+        "picture02": {
+            "url": "www.example.com/p02"
+        },
+        "picture03": {
+            "url": "www.example.com/p03"
+        }
+    }
+}
