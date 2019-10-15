@@ -280,7 +280,7 @@ class MainActivity : AppCompatActivity(), CardStackListener {
 
     private fun createSpots(): List<Spot> {
         val spots = ArrayList<Spot>()
-        //spots.add(Spot(name = "Yasaka Shrine", city = "Kyoto", url = "https://source.unsplash.com/Xq1ntWruZQI/600x800"))
+
         spots.add(Spot(name = "", city = "", url = "http://alpenglow.online/Idea/_archidesignhome__2015-05-19_17-42-01.jpg"))
         spots.add(Spot(name = "", city = "", url = "http://alpenglow.online/Idea/_archidesignhome__2015-05-19_22-15-44.jpg"))
         spots.add(Spot(name = "", city = "", url = "http://alpenglow.online/Idea/_archidesignhome__2015-05-20_02-09-06.jpg"))
