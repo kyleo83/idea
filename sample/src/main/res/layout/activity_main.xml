@@ -6,7 +6,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#426cf5">
+    >
 
     <LinearLayout
         android:orientation="vertical"
@@ -20,8 +20,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#008577">
+                android:layout_height="wrap_content">
             </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -38,8 +37,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_height="80dp"
                 android:layout_alignParentBottom="true"
-                android:clipChildren="false"
-                android:background="#426cf5">
+                android:clipChildren="false">
 
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton

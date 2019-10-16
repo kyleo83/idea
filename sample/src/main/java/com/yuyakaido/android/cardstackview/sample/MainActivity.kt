@@ -173,6 +173,8 @@ class MainActivity : AppCompatActivity(), CardStackListener {
         result.dispatchUpdatesTo(adapter)
     }
 
+    //reload function currently not being used so I commented it out
+    /**
     private fun reload() {
         val old = adapter.getSpots()
         val new = createSpots()
@@ -181,7 +183,11 @@ class MainActivity : AppCompatActivity(), CardStackListener {
         adapter.setSpots(new)
         result.dispatchUpdatesTo(adapter)
     }
+    **/
 
+
+    //addFirst function currently not being used so I commented it out
+    /**
     private fun addFirst(size: Int) {
         val old = adapter.getSpots()
         val new = mutableListOf<Spot>().apply {
@@ -195,7 +201,10 @@ class MainActivity : AppCompatActivity(), CardStackListener {
         adapter.setSpots(new)
         result.dispatchUpdatesTo(adapter)
     }
+    **/
 
+    //addList function currently not being used so I commented it out
+    /**
     private fun addLast(size: Int) {
         val old = adapter.getSpots()
         val new = mutableListOf<Spot>().apply {
@@ -207,7 +216,10 @@ class MainActivity : AppCompatActivity(), CardStackListener {
         adapter.setSpots(new)
         result.dispatchUpdatesTo(adapter)
     }
+    **/
 
+    //removeFirst function currently not being used so I commented it out
+    /**
     private fun removeFirst(size: Int) {
         if (adapter.getSpots().isEmpty()) {
             return
@@ -225,7 +237,10 @@ class MainActivity : AppCompatActivity(), CardStackListener {
         adapter.setSpots(new)
         result.dispatchUpdatesTo(adapter)
     }
+    **/
 
+    //removeLast function currently not being used so I commented it out
+    /**
     private fun removeLast(size: Int) {
         if (adapter.getSpots().isEmpty()) {
             return
@@ -243,7 +258,10 @@ class MainActivity : AppCompatActivity(), CardStackListener {
         adapter.setSpots(new)
         result.dispatchUpdatesTo(adapter)
     }
+    **/
 
+    //replace function currently not being used so I commented it out
+    /**
     private fun replace() {
         val old = adapter.getSpots()
         val new = mutableListOf<Spot>().apply {
@@ -254,7 +272,10 @@ class MainActivity : AppCompatActivity(), CardStackListener {
         adapter.setSpots(new)
         adapter.notifyItemChanged(manager.topPosition)
     }
+    **/
 
+    //swap function currently not being used so I commented it out
+    /**
     private fun swap() {
         val old = adapter.getSpots()
         val new = mutableListOf<Spot>().apply {
@@ -269,7 +290,10 @@ class MainActivity : AppCompatActivity(), CardStackListener {
         adapter.setSpots(new)
         result.dispatchUpdatesTo(adapter)
     }
+    **/
 
+    //createSpot function currently not being used so I commented it out
+    /**
     private fun createSpot(): Spot {
         return Spot(
                 name = "Yasaka Shrine",
@@ -277,6 +301,7 @@ class MainActivity : AppCompatActivity(), CardStackListener {
                 url = "https://source.unsplash.com/Xq1ntWruZQI/600x800"
         )
     }
+    **/
 
     private fun createSpots(): List<Spot> {
         val spots = ArrayList<Spot>()
