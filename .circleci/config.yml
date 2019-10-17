@@ -18,7 +18,7 @@ references:
   ## Workspace
 
   workspace: &workspace
-               ~/workspace
+    ~/workspace
   attach_debug_workspace: &attach_debug_workspace
     attach_workspace:
       at: *workspace
@@ -31,7 +31,7 @@ references:
       paths:
         - app/build/outputs/androidTest-results
         - app/build/outputs/apk
-        - app/build/outputs/code-coverage
+        - app/build/outputs/code_coverage
         - app/build/test-results
   persist_release_workspace: &persist_release_workspace
     persist_to_workspace:
@@ -70,10 +70,12 @@ references:
     run:
       name: Export Google Services key environment variable
       command: echo 'export GOOGLE_SERVICES_KEY="$GOOGLE_SERVICES_KEY"' >> $BASH_ENV
+      no_output_timeout: 30m
   decode_gservices_key: &decode_gservices_key
     run:
       name: Decode Google Services key
       command: echo $GOOGLE_SERVICES_KEY | base64 -di > app/google-services.json
+      no_output_timeout: 30m
 
   # Google Cloud Service
 
@@ -81,10 +83,12 @@ references:
     run:
       name: Export Google Cloud Service key environment variable
       command: echo 'export GCLOUD_SERVICE_KEY="$GCLOUD_SERVICE_KEY"' >> $BASH_ENV
+      no_output_timeout: 30m
   decode_gcloud_key: &decode_gcloud_key
     run:
       name: Decode Google Cloud credentials
       command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/client-secret.json
+      no_output_timeout: 30m
 
 jobs:
 
@@ -98,12 +102,14 @@ jobs:
       - run:
           name: Download dependencies
           command: ./gradlew androidDependencies
+          no_output_timeout: 30m
       - *save_cache
       - *export_gservices_key
       - *decode_gservices_key
       - run:
           name: Gradle build (debug)
           command: ./gradlew -PciBuild=true :app:assembleDebug :app:assembleAndroidTest
+          no_output_timeout: 30m
       - *persist_debug_workspace
       - store_artifacts:
           path: app/build/outputs/apk/
@@ -119,12 +125,14 @@ jobs:
       - run:
           name: Download dependencies
           command: ./gradlew androidDependencies
+          no_output_timeout: 30m
       - *save_cache
       - *export_gservices_key
       - *decode_gservices_key
       - run:
           name: Gradle build (release)
           command: ./gradlew -PciBuild=true :app:assembleRelease
+          no_output_timeout: 30m
       - *persist_release_workspace
       - store_artifacts:
           path: app/build/outputs/apk/
@@ -143,12 +151,14 @@ jobs:
       - run:
           name: Download dependencies
           command: ./gradlew androidDependencies
+          no_output_timeout: 30m
       - *save_cache
       - *export_gservices_key
       - *decode_gservices_key
       - run:
           name: Run unit tests
           command: ./gradlew -PciBuild=true :app:testDebugUnitTest
+          no_output_timeout: 30m
       - *persist_debug_workspace
       - store_artifacts:
           path: app/build/reports/
@@ -168,21 +178,25 @@ jobs:
       - run:
           name: Set Google Cloud target project
           command: gcloud config set project idea-ad430
+          no_output_timeout: 30m
       - run:
           name: Authenticate with Google Cloud
           command: gcloud auth activate-service-account firebase-adminsdk-xycp5@idea-ad430.iam.gserviceaccount.com --key-file ${HOME}/client-secret.json
       - run:
           name: Echo sha1 variable for debugging
           command: echo ${CIRCLE_SHA1}
+          no_output_timeout: 30m
       - run:
           name: Run instrumented test on Firebase Test Lab
-          command: gcloud firebase test android run --type instrumentation --app app/build/outputs/apk/debug/app-debug.apk --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk --device model=Nexus6P,version=27,locale=en_US,orientation=portrait --no-use-orchestrator --environment-variables coverage=true,coverageFile="/sdcard/coverage.ec" --directories-to-pull=/sdcard --timeout 20m --results-dir=${CIRCLE_SHA1}
+          command: gcloud firebase test android run --type instrumentation --app app/build/outputs/apk/debug/app-debug.apk --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk --device model=Nexus6P,version=27,locale=en_US,orientation=portrait --environment-variables coverage=true,coverageFile="/sdcard/coverage.ec" --directories-to-pull=/sdcard --timeout 28m --results-dir=${CIRCLE_SHA1}
+          no_output_timeout: 30m
       - run:
           name: Create directory to store test results
           command: mkdir firebase
       - run:
           name: Download instrumented test results from Firebase Test Lab
           command: gsutil -m cp -r -U gs://test-lab-w4t70wyu8p260-waxa4jmuf5k9c/${CIRCLE_SHA1} /root/workspace/firebase/
+          no_output_timeout: 30m
       - *persist_firebase_workspace
       - store_artifacts:
           path: firebase/
@@ -198,19 +212,23 @@ jobs:
       - run:
           name: Download dependencies
           command: ./gradlew androidDependencies
+          no_output_timeout: 30m
       - *attach_debug_workspace
       - *attach_firebase_workspace
       - run:
           name: Move Firebase coverage report
-          command: mkdir -p app/build/outputs/code-coverage/connected && cp firebase/${CIRCLE_SHA1}/Nexus6P-27-en_US-portrait/artifacts/coverage.ec app/build/outputs/code-coverage/connected/coverage.ec
+          command: mkdir -p app/build/outputs/code_coverage/debugAndroidTest/connected && cp firebase/${CIRCLE_SHA1}/Nexus6P-27-en_US-portrait/artifacts/coverage.ec app/build/outputs/code_coverage/debugAndroidTest/connected/coverage.ec
+          no_output_timeout: 30m
       - *export_gservices_key
       - *decode_gservices_key
       - run:
           name: Generate JaCoCo report
           command: ./gradlew -PciBuild=true :app:jacocoTestReport
+          no_output_timeout: 30m
       - run:
           name: Upload coverage report to CodeCov
           command: bash <(curl -s https://codecov.io/bash)
+          no_output_timeout: 30m
       - store_artifacts:
           path: app/build/reports/
           destination: /reports/
