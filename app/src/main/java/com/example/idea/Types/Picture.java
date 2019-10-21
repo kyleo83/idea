@@ -8,9 +8,9 @@ public class Picture {
     private String sourceUrl;
     private String roomTag;
 
+    // Constructor
     public Picture() {
     }
-
     public Picture(int id, String sourceUrl, @RoomTagDef String roomTag) {
         setId(id);
         setSourceUrl(sourceUrl);

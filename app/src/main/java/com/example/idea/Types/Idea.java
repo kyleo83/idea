@@ -6,9 +6,9 @@ public class Idea {
     private int pictureId;
     private String textDescription;
 
+    // Constructor
     public Idea() {
     }
-
     public Idea(int id, int pictureId, String textDescription) {
         setId(id);
         setPictureId(pictureId);
