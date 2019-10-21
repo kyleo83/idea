@@ -1,8 +1,10 @@
 package com.example.idea;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 
 import android.content.Intent;
@@ -33,10 +35,15 @@ public class MainActivity extends AppCompatActivity {
 
         mSwipeView = (SwipePlaceHolderView)findViewById(R.id.swipeView);
         mContext = getApplicationContext();
+        int bottomMargin = Utils.dpToPx(160);
+        Point windowSize = Utils.getDisplaySize(getWindowManager());
 
         mSwipeView.getBuilder()
                 .setDisplayViewCount(3)
                 .setSwipeDecor(new SwipeDecor()
+                        .setViewWidth(windowSize.x)
+                        .setViewHeight(windowSize.y - bottomMargin)
+                        .setViewGravity(Gravity.TOP)
                         .setPaddingTop(20)
                         .setRelativeScale(0.01f)
                         .setSwipeInMsgLayoutId(R.layout.swipe_right_view)
@@ -60,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
                 mSwipeView.doSwipe(true);
             }
         });
+
+
+
 
         auth = FirebaseAuth.getInstance();
         //get current user
