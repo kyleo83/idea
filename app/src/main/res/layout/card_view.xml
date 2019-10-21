@@ -15,7 +15,7 @@ android:orientation="vertical">
     app:cardCornerRadius="7dp"
     app:cardElevation="4dp">
     <ImageView
-        android:id="@+id/profileImageView"
+        android:id="@+id/ideaImageView"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,14 +28,14 @@ android:orientation="vertical">
         android:gravity="center|left"
         android:paddingLeft="20dp">
         <TextView
-            android:id="@+id/nameAgeTxt"
+            android:id="@+id/roomTag"
             android:layout_width="wrap_content"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="18dp"
             android:textStyle="bold"
             android:layout_height="wrap_content"/>
         <TextView
-            android:id="@+id/locationNameTxt"
+            android:id="@+id/txtDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimaryDark"
