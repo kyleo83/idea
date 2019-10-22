@@ -1,7 +1,12 @@
 <resources>
 
+<<<<<<< Updated upstream
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+=======
+    <!-- Base application theme. Action Bar turned of so that can use custom app bar-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+>>>>>>> Stashed changes
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
