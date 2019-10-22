@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 
+import com.example.idea.Controllers.CacheManager;
+import com.example.idea.Types.User;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
+    private User user;
+    private CacheManager cachePrefs;
 
     private TextView email;
     private Button signOut;
@@ -32,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Firebase auth
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        this.user = loggedInOrGuest(mFirebaseAuth);
 
         mSwipeView = (SwipePlaceHolderView)findViewById(R.id.swipeView);
         mContext = getApplicationContext();
@@ -111,5 +119,24 @@ public class MainActivity extends AppCompatActivity {
         if (authListener != null) {
             auth.removeAuthStateListener(authListener);
         }
+    }
+
+    private User loggedInOrGuest(FirebaseAuth mFirebaseAuth) {
+        if (cachePrefs.isLoggedIn()) {
+            // call login activity
+            FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+            if (mFirebaseUser != null) {
+                // if User logged in, create User based on info from logged
+                int userUid = Integer.parseInt(mFirebaseUser.getUid());
+                String userDisplayName = mFirebaseUser.getDisplayName();
+                User userCreated = new User(userUid, userDisplayName);
+                cachePrefs.createLoginSession(userUid, userDisplayName);
+                return userCreated;
+            }
+        }
+        // Guest user created
+        User guestCreated = new User(user.GUEST_NAME);
+        cachePrefs.createLoginSession(user.GUEST_ID, user.GUEST_NAME);
+        return guestCreated;
     }
 }

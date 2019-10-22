@@ -5,7 +5,7 @@ import android.support.annotation.StringDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-public class RoomTag {
+public class RoomTagDescriptor {
 
     private final String roomTag;
 
@@ -26,7 +26,7 @@ public class RoomTag {
     public static final String TAG_BATHROOM = "bathroom";
 
     // Marks the arg as restricted to the enumerated types
-    public RoomTag(@RoomTagDef String roomTag) {
+    public RoomTagDescriptor(@RoomTagDef String roomTag) {
         this.roomTag = roomTag;
     }
 
