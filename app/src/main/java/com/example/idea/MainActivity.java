@@ -2,9 +2,12 @@ package com.example.idea;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.idea.Controllers.CacheManager;
@@ -32,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
 
+    DrawerLayout drawerLayout;
+    NavigationView navigation;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
                         .setRelativeScale(0.01f)
                         .setSwipeInMsgLayoutId(R.layout.swipe_right_view)
                         .setSwipeOutMsgLayoutId(R.layout.swipe_left_view));
+
+
+
 
 
         for(Design design : Utils.loadDesigns(this.getApplicationContext())){
@@ -97,12 +108,46 @@ public class MainActivity extends AppCompatActivity {
         signOut = (Button) findViewById(R.id.sign_out);
         email = (TextView) findViewById(R.id.email);
 //        email.setText(user.getEmail());
+
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signOut();
             }
         });
+
+
+
+        drawerLayout = findViewById(R.id.drawerlayout);
+//        drawerLayout.closeDrawer(Gravity.LEFT);
+
+
+        navigation = findViewById(R.id.nav_view);
+
+
+       //i will impliment this later for routing the menu items....
+//        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(MenuItem menuItem) {
+//                int id = menuItem.getItemId();
+//                switch (id) {
+//                    case R.id.menu_home:
+//                        switchFragment("home");
+//                        break;
+//                    case R.id.menu_about:
+//                        switchFragment("about");
+//                        break;
+//
+//                }
+//                return false;
+//            }
+//        });
+
+
+
+
+
+
     }
     //sign out method
     public void signOut() {
