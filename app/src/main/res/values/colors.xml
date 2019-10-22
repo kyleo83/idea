@@ -3,4 +3,13 @@
     <color name="colorPrimary">#55615E</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#EFF8FF</color>
+    <color name="white">#ffffff</color>
+    <color name="lbl_email">#333333</color>
+    <color name="input_login">#222222</color>
+    <color name="input_register">#222222</color>
+    <color name="input_login_hint">#999999</color>
+    <color name="input_register_hint">#999999</color>
+    <color name="btn_login_register">#2196F3</color>
+    <color name="btn_register">#0D47A1</color>
+    <color name="btn_logut">#ff6861</color>
 </resources>
