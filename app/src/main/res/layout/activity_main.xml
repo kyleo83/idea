@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerlayout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#bdd9d4">
+    android:background="#bdd9d4"
+    tools:context=".MainActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,16 +30,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_gravity="bottom"
-        android:gravity="center"
+        android:gravity="bottom"
         android:orientation="horizontal">
+
         <ImageButton
             android:id="@+id/cancelBtn"
+            android:gravity="bottom"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@mipmap/ic_cancel"/>
+
         <ImageButton
             android:id="@+id/addBtn"
+            android:gravity="bottom"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="30dp"
@@ -43,6 +50,7 @@
 
         <Button
             android:id="@+id/sign_out"
+            android:gravity="right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
@@ -51,8 +59,20 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+
+    <android.support.design.widget.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity='start'
+        android:id="@+id/nav_view"
+        app:headerLayout="@layout/menu_header"
+        app:menu="@menu/menu"/>
+
+
+
     <com.mindorks.placeholderview.SwipePlaceHolderView
         android:id="@+id/swipeView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</FrameLayout>
+
+</android.support.v4.widget.DrawerLayout>
