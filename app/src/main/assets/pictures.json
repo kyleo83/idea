@@ -1,38 +1,33 @@
 [
   {
-    "description":"this is a place",
-    "picture_id":2,
-    "id": 1
-
+    "url":"http://www.architectureartdesigns.com/wp-content/uploads/2014/11/15-Relaxed-Transitional-Living-Room-Designs-To-Unwind-You-13-630x420.jpg",
+    "id":1,
+    "tag": "kitchen"
   },
 
   {
     "url":"https://homemakeover.in/wp-content/uploads/2016/05/Kitchen-Designs-on-a-Budget-12.jpg",
-    "picture_id":2,
-    "id": 2
-
+    "id":2,
+    "tag": "living room"
   },
 
 
   {
     "url":"https://i.ytimg.com/vi/iXv3YjSn5x4/hqdefault.jpg",
-    "picture_id": 3,
-    "id": 3
-
+    "id":3,
+    "tag": "patio"
   },
 
   {
     "url":"http://www.clker.com/cliparts/7/1/a/e/13646878511364933842luxury-and-classic-house-landscaping-ideas.jpg",
-    "picture_id": 4,
-    "id": 4
-
+    "id":4,
+    "tag": "bedroom"
   },
 
   {
     "url":"https://threadgoldarchitecture.com.au/wp-content/uploads/2018/08/narrow-house-plans-perth-busselton.jpg",
-    "picture_id": 5,
-    "id": 5
-
+    "id":5,
+    "tag": "bathroom"
   }
 
 

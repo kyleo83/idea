@@ -2,11 +2,6 @@ package com.example.idea;
 
 import android.content.Context;
 import android.graphics.Point;
-<<<<<<< Updated upstream
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.Gravity;
-=======
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,44 +15,34 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
->>>>>>> Stashed changes
 import android.view.View;
 
+import com.example.idea.Controllers.CacheManager;
+import com.example.idea.Types.User;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.TextView;
-<<<<<<< Updated upstream
-=======
 import android.widget.Toast;
 
->>>>>>> Stashed changes
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 
-<<<<<<< Updated upstream
-public class MainActivity extends AppCompatActivity {
-=======
 public class MainActivity extends AppCompatActivity implements HomeFragment.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
->>>>>>> Stashed changes
 
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
+    private User user;
+    private CacheManager cachePrefs;
 
     private TextView email;
     private Button signOut;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
-
-<<<<<<< Updated upstream
-=======
-
-
-
 
     //declares variables for Tags, Navigation, DrawerLayout, and Toolbar
     private static final String TAG = "MainActivity";
@@ -66,19 +51,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
     private NavigationView navigationView;
 
 
-
-
->>>>>>> Stashed changes
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-<<<<<<< Updated upstream
-=======
-
-
-
 
 
         //start of fragment, navigation, and toolbar references
@@ -114,10 +90,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
 
 
+        // Firebase auth
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        this.user = loggedInOrGuest(mFirebaseAuth);
 
-
-
->>>>>>> Stashed changes
         mSwipeView = (SwipePlaceHolderView)findViewById(R.id.swipeView);
         mContext = getApplicationContext();
         int bottomMargin = Utils.dpToPx(160);
@@ -133,6 +109,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                         .setRelativeScale(0.01f)
                         .setSwipeInMsgLayoutId(R.layout.swipe_right_view)
                         .setSwipeOutMsgLayoutId(R.layout.swipe_left_view));
+
+
+
 
 
         for(Design design : Utils.loadDesigns(this.getApplicationContext())){
@@ -174,12 +153,46 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         signOut = (Button) findViewById(R.id.sign_out);
         email = (TextView) findViewById(R.id.email);
 //        email.setText(user.getEmail());
+
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signOut();
             }
         });
+
+
+
+        drawerLayout = findViewById(R.id.drawerlayout);
+//        drawerLayout.closeDrawer(Gravity.LEFT);
+
+
+        navigation = findViewById(R.id.nav_view);
+
+
+       //i will impliment this later for routing the menu items....
+//        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(MenuItem menuItem) {
+//                int id = menuItem.getItemId();
+//                switch (id) {
+//                    case R.id.menu_home:
+//                        switchFragment("home");
+//                        break;
+//                    case R.id.menu_about:
+//                        switchFragment("about");
+//                        break;
+//
+//                }
+//                return false;
+//            }
+//        });
+
+
+
+
+
+
     }
     //sign out method
     public void signOut() {
@@ -197,12 +210,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
             auth.removeAuthStateListener(authListener);
         }
     }
-<<<<<<< Updated upstream
-=======
-
-
-
-
 
 
 
@@ -366,6 +373,22 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
     //end of fragment selector, toolbar menu, and navigation menu selection functions
 
 
-
->>>>>>> Stashed changes
+    private User loggedInOrGuest(FirebaseAuth mFirebaseAuth) {
+        if (cachePrefs.isLoggedIn()) {
+            // call login activity
+            FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+            if (mFirebaseUser != null) {
+                // if User logged in, create User based on info from logged
+                int userUid = Integer.parseInt(mFirebaseUser.getUid());
+                String userDisplayName = mFirebaseUser.getDisplayName();
+                User userCreated = new User(userUid, userDisplayName);
+                cachePrefs.createLoginSession(userUid, userDisplayName);
+                return userCreated;
+            }
+        }
+        // Guest user created
+        User guestCreated = new User(user.GUEST_NAME);
+        cachePrefs.createLoginSession(user.GUEST_ID, user.GUEST_NAME);
+        return guestCreated;
+    }
 }

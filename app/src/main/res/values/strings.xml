@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">i*de*a</string>
+    <string name="app_name">Idea</string>
     <string name="action_sign_in_short">Register</string>
     <string name="email">Email</string>
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
@@ -18,8 +18,6 @@
     <string name="lbl_forgot_password">Forgot password?</string>
     <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
     <string name="title_activity_signup">SignupActivity</string>
-<<<<<<< Updated upstream
-=======
 
     <!--strings for fragments, toolbar, and navigation -->
     <string name="nav_home">Home</string>
@@ -40,6 +38,4 @@
     <string name="fragment_about">About Fragment</string>
     <string name="fragment_home_next">Next Fragment</string>
 
-
->>>>>>> Stashed changes
 </resources>
