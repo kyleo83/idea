@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 }
             }
         };
+
 //        signOut = (Button) findViewById(R.id.sign_out);
 //        email = (TextView) findViewById(R.id.email);
 //        email.setText(user.getEmail());
