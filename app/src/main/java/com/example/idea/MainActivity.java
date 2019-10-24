@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
     Fragment newFragment;
 
+    boolean logout = false;
 
 
 
@@ -114,19 +115,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
             }
         };
 
-//        signOut = (Button) findViewById(R.id.sign_out);
-//        email = (TextView) findViewById(R.id.email);
-//        email.setText(user.getEmail());
-//        signOut.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                signOut();
-//            }
-//        });
     }
     //sign out method
     public void signOut() {
         auth.signOut();
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
     }
     @Override
     public void onStart() {
@@ -238,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 break;
 
             case R.id.Signout:
+                logout = true;
                 Log.i(TAG, "sign out was clicked");
 
                 toast = Toast.makeText(this,
@@ -248,7 +243,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 //                signOut();
 
                 signOut();
-
                 break;
 
 
@@ -260,13 +254,17 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         //closes drawer
         drawer.closeDrawer(GravityCompat.START);
 
-        FragmentTransaction transaction =
-                getSupportFragmentManager().beginTransaction();
 
-        transaction.replace(R.id.fragment_host, newFragment);
-        transaction.addToBackStack(null);
+        if(!logout){
+            FragmentTransaction transaction =
+                    getSupportFragmentManager().beginTransaction();
+            Log.i(TAG, "onNavigationItemSelected: ");
+            transaction.replace(R.id.fragment_host, newFragment);
+            transaction.addToBackStack(null);
 
-        transaction.commit();
+            transaction.commit();
+        }
+
 
         return false;
     }
