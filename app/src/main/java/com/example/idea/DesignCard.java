@@ -19,14 +19,14 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 
 @Layout(R.layout.card_view)
 public class DesignCard {
-        @View(R.id.ideaImageView)
-        private ImageView ideaImageView;
+        @View(R.id.profileImageView)
+        private ImageView profileImageView;
 
-        @View(R.id.roomTag)
-        private TextView roomTag;
+        @View(R.id.nameAgeTxt)
+        private TextView nameAgeTxt;
 
-        @View(R.id.txtDescription)
-        private TextView txtDescription;
+        @View(R.id.locationNameTxt)
+        private TextView locationNameTxt;
 
         private Design mdesign;
         private Context mContext;
@@ -40,9 +40,8 @@ public class DesignCard {
 
         @Resolve
         private void onResolved(){
-            Glide.with(mContext).load(mdesign.getImageUrl()).into(ideaImageView);
-            String tagText = "# " + mdesign.getTag();
-            roomTag.setText(tagText);
+            Glide.with(mContext).load(mdesign.getImageUrl()).into(profileImageView);
+            nameAgeTxt.setText("#"+ mdesign.getName() );
 
         }
 

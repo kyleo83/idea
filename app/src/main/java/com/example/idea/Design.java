@@ -4,32 +4,21 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Design {
-    @SerializedName("id")
+    @SerializedName("name")
     @Expose
-    private int pictureId;
-
-    @SerializedName("tag")
-    @Expose
-    private String tag;
+    private String name;
 
     @SerializedName("url")
     @Expose
     private String imageUrl;
 
-    public int getPictureId() {
-        return pictureId;
+
+    public String getName() {
+        return name;
     }
 
-    public void setPictureId(int pictureId) {
-        this.pictureId = pictureId;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getImageUrl() {
