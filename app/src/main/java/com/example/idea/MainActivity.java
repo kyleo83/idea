@@ -35,7 +35,7 @@ import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnNextClickListener,ProfileFragment.OnNextClickListener,AboutFragment.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
 
 
     private SwipePlaceHolderView mSwipeView;
@@ -48,16 +48,15 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
 
 
-
-
-
     //declares variables for Tags, Navigation, DrawerLayout, and Toolbar
     private static final String TAG = "MainActivity";
     private Toolbar toolbar;
     private DrawerLayout drawer;
     private NavigationView navigationView;
 
+    Fragment newFragment;
 
+    boolean logout = false;
 
 
 
@@ -65,11 +64,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
-
-
 
 
         //start of fragment, navigation, and toolbar references
@@ -100,40 +94,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
         //end of fragment, navigation, and toolbar references
 
-        mSwipeView = (SwipePlaceHolderView)findViewById(R.id.swipeView);
-        mContext = getApplicationContext();
-        int bottomMargin = Utils.dpToPx(160);
-        Point windowSize = Utils.getDisplaySize(getWindowManager());
-
-        mSwipeView.getBuilder()
-                .setDisplayViewCount(3)
-                .setSwipeDecor(new SwipeDecor()
-                        .setViewWidth(windowSize.x)
-                        .setViewHeight(windowSize.y - bottomMargin)
-                        .setViewGravity(Gravity.TOP)
-                        .setPaddingTop(20)
-                        .setRelativeScale(0.01f)
-                        .setSwipeInMsgLayoutId(R.layout.swipe_right_view)
-                        .setSwipeOutMsgLayoutId(R.layout.swipe_left_view));
-
-
-        for(Design design : Utils.loadDesigns(this.getApplicationContext())){
-            mSwipeView.addView(new DesignCard(mContext, design, mSwipeView));
-        }
-
-        findViewById(R.id.cancelBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSwipeView.doSwipe(false);
-            }
-        });
-
-        findViewById(R.id.addBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSwipeView.doSwipe(true);
-            }
-        });
 
 
 
@@ -144,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                Toast.makeText(MainActivity.this, "auth state changed", Toast.LENGTH_LONG).show();
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
                     // user auth state is changed - user is null
@@ -153,19 +114,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 }
             }
         };
-        signOut = (Button) findViewById(R.id.sign_out);
-        email = (TextView) findViewById(R.id.email);
-//        email.setText(user.getEmail());
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
-            }
-        });
+
     }
     //sign out method
     public void signOut() {
         auth.signOut();
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
     }
     @Override
     public void onStart() {
@@ -179,11 +134,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
             auth.removeAuthStateListener(authListener);
         }
     }
-
-
-
-
-
 
 
 
@@ -212,7 +162,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
     @Override
     public void OnHomeFragmentNextClick(HomeFragment fragment) {
+
         swapFragments(fragment);
+
     }
 
     @Override
@@ -246,11 +198,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         }
     }
 
+
+
     //switch cases for choosing fragments
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Toast toast;
-        Fragment newFragment;
+
 
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
@@ -269,62 +223,29 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 newFragment = new AboutFragment();
                 break;
 
-            case R.id.nav_kitchen:
-                Log.i(TAG, "kitchen clicked");
+            case R.id.profile:
+                Log.i(TAG, "profile");
                 toast = Toast.makeText(this,
-                        "Kitchen Fragment", Toast.LENGTH_SHORT);
+                        "profile Fragment", Toast.LENGTH_SHORT);
                 toast.show();
-                newFragment = new KitchenFragment();
+//                newFragment = new ProfileFragment();
                 break;
-            case R.id.nav_bathroom:
-                Log.i(TAG, "bathroom clicked");
+
+            case R.id.Signout:
+                logout = true;
+                Log.i(TAG, "sign out was clicked");
+
                 toast = Toast.makeText(this,
-                        "Bathroom Fragment", Toast.LENGTH_SHORT);
+                        "sign out", Toast.LENGTH_SHORT);
                 toast.show();
-                newFragment = new BathroomFragment();
+
+//                auth.getCurrentUser().unlink(auth.getCurrentUser().getProviderId());
+//                signOut();
+
+                signOut();
                 break;
-            case R.id.nav_livingroom:
-                Log.i(TAG, "livingroom clicked");
-                toast = Toast.makeText(this,
-                        "Livingroom Fragment", Toast.LENGTH_SHORT);
-                toast.show();
-                newFragment = new LivingroomFragment();
-                break;
-            case R.id.nav_bedroom:
-                Log.i(TAG, "bedroom clicked");
-                toast = Toast.makeText(this,
-                        "Bedroom Fragment", Toast.LENGTH_SHORT);
-                toast.show();
-                newFragment = new BedroomFragment();
-                break;
-            case R.id.nav_interior:
-                Log.i(TAG, "interior clicked");
-                toast = Toast.makeText(this,
-                        "Interior Fragment", Toast.LENGTH_SHORT);
-                toast.show();
-                newFragment = new InteriorFragment();
-                break;
-            case R.id.nav_landscape:
-                Log.i(TAG, "landscape clicked");
-                toast = Toast.makeText(this,
-                        "Landscape Fragment", Toast.LENGTH_SHORT);
-                toast.show();
-                newFragment = new LandscapeFragment();
-                break;
-            case R.id.nav_architecture:
-                Log.i(TAG, "architecture clicked");
-                toast = Toast.makeText(this,
-                        "Architecture Fragment", Toast.LENGTH_SHORT);
-                toast.show();
-                newFragment = new ArchitectureFragment();
-                break;
-            case R.id.nav_design:
-                Log.i(TAG, "design clicked");
-                toast = Toast.makeText(this,
-                        "Design Fragment", Toast.LENGTH_SHORT);
-                toast.show();
-                newFragment = new DesignFragment();
-                break;
+
+
 
             default:
                 newFragment = new HomeFragment();
@@ -333,15 +254,29 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         //closes drawer
         drawer.closeDrawer(GravityCompat.START);
 
-        FragmentTransaction transaction =
-                getSupportFragmentManager().beginTransaction();
 
-        transaction.replace(R.id.fragment_host, newFragment);
-        transaction.addToBackStack(null);
+        if(!logout){
+            FragmentTransaction transaction =
+                    getSupportFragmentManager().beginTransaction();
+            Log.i(TAG, "onNavigationItemSelected: ");
+            transaction.replace(R.id.fragment_host, newFragment);
+            transaction.addToBackStack(null);
 
-        transaction.commit();
+            transaction.commit();
+        }
+
 
         return false;
+    }
+
+    @Override
+    public void OnAboutFragmentNextClick(AboutFragment fragment) {
+
+    }
+
+    @Override
+    public void OnProfileFragmentNextClick(ProfileFragment fragment) {
+
     }
 
     //end of fragment selector, toolbar menu, and navigation menu selection functions
@@ -349,3 +284,4 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
 
 }
+

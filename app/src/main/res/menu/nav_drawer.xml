@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
+
         <item
             android:id="@+id/nav_home"
             android:icon="@color/lbl_email"
@@ -10,38 +11,18 @@
             android:id="@+id/nav_about"
             android:icon="@android:drawable/ic_menu_help"
             android:title="@string/nav_about" />
+
         <item
-            android:id="@+id/nav_kitchen"
+            android:id="@+id/profile"
             android:icon="@android:drawable/sym_action_chat"
-            android:title="@string/nav_kitchen" />
+            android:title="Profile" />
+
         <item
-            android:id="@+id/nav_bathroom"
+            android:id="@+id/Signout"
             android:icon="@android:drawable/sym_action_chat"
-            android:title="@string/nav_bathroom" />
-        <item
-            android:id="@+id/nav_livingroom"
-            android:icon="@android:drawable/sym_action_chat"
-            android:title="@string/nav_livingroom" />
-        <item
-            android:id="@+id/nav_bedroom"
-            android:icon="@android:drawable/sym_action_chat"
-            android:title="@string/nav_bedroom" />
-        <item
-            android:id="@+id/nav_interior"
-            android:icon="@android:drawable/sym_action_chat"
-            android:title="@string/nav_interior" />
-        <item
-            android:id="@+id/nav_landscape"
-            android:icon="@android:drawable/sym_action_chat"
-            android:title="@string/nav_landscape" />
-        <item
-            android:id="@+id/nav_architecture"
-            android:icon="@android:drawable/sym_action_chat"
-            android:title="@string/nav_architecture" />
-        <item
-            android:id="@+id/nav_design"
-            android:icon="@android:drawable/sym_action_chat"
-            android:title="@string/nav_design" />
+            android:title="Signout"/>
+
 
     </group>
 </menu>
+
