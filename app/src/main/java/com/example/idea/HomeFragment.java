@@ -2,6 +2,7 @@ package com.example.idea;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -67,6 +68,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 mSwipeView.doSwipe(true);
             }
         });
+
+        v.findViewById(R.id.uploadBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), UploadActivity.class)) ;
+            }
+        });
+
 
         return v;
 

@@ -45,6 +45,14 @@
                 android:layout_marginLeft="30dp"
                 android:background="@mipmap/ic_add"/>
 
+            <ImageButton
+                android:id="@+id/uploadBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="30dp"
+                android:background="@mipmap/ic_upload"/>
+
+
         </LinearLayout>
 
         <com.mindorks.placeholderview.SwipePlaceHolderView
