@@ -108,9 +108,16 @@ public class SignupActivity extends AppCompatActivity {
         dialogBuilder.setView(dialogView);
         final EditText editEmail = (EditText) dialogView.findViewById(R.id.email);
         final Button btnReset = (Button) dialogView.findViewById(R.id.btn_reset_password);
+        final Button btnBack = (Button) dialogView.findViewById(R.id.btn_back);
         final ProgressBar progressBar1 = (ProgressBar) dialogView.findViewById(R.id.progressBar);
         //dialogBuilder.setTitle("Send Photos");
         final AlertDialog dialog = dialogBuilder.create();
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
         btnReset.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String email = editEmail.getText().toString().trim();
