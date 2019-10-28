@@ -42,49 +42,14 @@ public class SignupActivity extends AppCompatActivity {
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnResetPassword = (Button) findViewById(R.id.btn_reset_password);
-/*        btnResetPassword.setOnClickListener(new View.OnClickListener() {
+        btnResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 resetPassword();
                 //startActivity(new Intent(SignupActivity.this, ResetPasswordActivity.class));
             }
 
-            private void resetPassword() {
-                final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-                LayoutInflater inflater = getLayoutInflater();
-                final View dialogView = inflater.inflate(R.layout.activity_reset_password, null);
-                dialogBuilder.setView(dialogView);
-                final EditText editEmail = (EditText) dialogView.findViewById(R.id.email);
-                final Button btnReset = (Button) dialogView.findViewById(R.id.btn_reset_password);
-                final ProgressBar progressBar1 = (ProgressBar) dialogView.findViewById(R.id.progressBar);
-                //dialogBuilder.setTitle("Send Photos");
-                final AlertDialog dialog = dialogBuilder.create();
-                btnReset.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        String email = editEmail.getText().toString().trim();
-                        if (TextUtils.isEmpty(email)) {
-                            Toast.makeText(getApplication(), "Enter your registered email id", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        progressBar1.setVisibility(View.VISIBLE);
-                        auth.sendPasswordResetEmail(email)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(LoginActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(LoginActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
-                                        }
-                                        progressBar1.setVisibility(View.GONE);
-                                        dialog.dismiss();
-                                    }
-                                });
-                    }
-                });
-                dialog.show();
-            }
-        });*/
+        });
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,5 +100,47 @@ public class SignupActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         progressBar.setVisibility(View.GONE);
+    }
+    private void resetPassword() {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.activity_reset_password, null);
+        dialogBuilder.setView(dialogView);
+        final EditText editEmail = (EditText) dialogView.findViewById(R.id.email);
+        final Button btnReset = (Button) dialogView.findViewById(R.id.btn_reset_password);
+        final Button btnBack = (Button) dialogView.findViewById(R.id.btn_back);
+        final ProgressBar progressBar1 = (ProgressBar) dialogView.findViewById(R.id.progressBar);
+        //dialogBuilder.setTitle("Send Photos");
+        final AlertDialog dialog = dialogBuilder.create();
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String email = editEmail.getText().toString().trim();
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(getApplication(), "Enter your registered email id", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                progressBar1.setVisibility(View.VISIBLE);
+                auth.sendPasswordResetEmail(email)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(SignupActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(SignupActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
+                                }
+                                progressBar1.setVisibility(View.GONE);
+                                dialog.dismiss();
+                            }
+                        });
+            }
+        });
+        dialog.show();
     }
 }
