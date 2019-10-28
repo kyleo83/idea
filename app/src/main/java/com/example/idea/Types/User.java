@@ -2,9 +2,12 @@ package com.example.idea.Types;
 
 import android.util.SparseArray;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 public class User {
 
-    private int id;
+    private String id;
     private String displayName;
     private SparseArray<String> ideasSeen;
 
@@ -16,7 +19,7 @@ public class User {
     // Constructors
     public User() {
     }
-    public User(int id, String displayName) {
+    public User(String id, String displayName) {
         setId(id);
         setDisplayName(displayName);
         newIdeasSeenTracker();
@@ -27,26 +30,26 @@ public class User {
         newIdeasSeenTracker();
     }
 
-    private int getId() {
+    public String getId() {
         return id;
     }
 
-    private void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     /**
      * Creates sparsearray for tracking Ideas seen by User.
      */
-    private void newIdeasSeenTracker() {
+    public void newIdeasSeenTracker() {
         this.ideasSeen = new SparseArray<>();
     }
 
-    private SparseArray getSeenMap() {
+    public SparseArray getSeenMap() {
         return ideasSeen;
     }
 
-    private String getDisplayName() {
+    public String getDisplayName() {
         return displayName;
     }
 
@@ -54,7 +57,7 @@ public class User {
      * Set display name. Can be set at login or if user changes preferences.
      * @param displayName
      */
-    private void setDisplayName(String displayName) {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
@@ -63,7 +66,7 @@ public class User {
      * ideasSeen as a "liked" photo.
      * @param ideaId
      */
-    private void setLikedIdea(int ideaId) {
+    public void setLikedIdea(int ideaId) {
         this.ideasSeen.put(ideaId, LIKED_IDEA);
     }
 
@@ -72,7 +75,7 @@ public class User {
      * ideasSeen as a "disliked" photo.
      * @param ideaId
      */
-    private void setDislikedIdea(int ideaId) {
+    public void setDislikedIdea(int ideaId) {
         this.ideasSeen.put(ideaId, DISLIKED_IDEA);
     }
 }
