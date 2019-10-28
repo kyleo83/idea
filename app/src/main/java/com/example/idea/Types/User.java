@@ -9,6 +9,9 @@ public class User {
 
     private String id;
     private String displayName;
+
+
+    private String email;
     private SparseArray<String> ideasSeen;
 
     private static final String LIKED_IDEA = "liked";
@@ -19,9 +22,10 @@ public class User {
     // Constructors
     public User() {
     }
-    public User(String id, String displayName) {
+    public User(String id, String displayName, String email) {
         setId(id);
         setDisplayName(displayName);
+        setEmail(email);
         newIdeasSeenTracker();
     }
     // Guest user
@@ -77,5 +81,13 @@ public class User {
      */
     public void setDislikedIdea(int ideaId) {
         this.ideasSeen.put(ideaId, DISLIKED_IDEA);
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
