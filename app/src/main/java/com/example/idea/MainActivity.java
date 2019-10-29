@@ -116,6 +116,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         };
 
     }
+    public String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
     //sign out method
     public void signOut() {
         auth.signOut();

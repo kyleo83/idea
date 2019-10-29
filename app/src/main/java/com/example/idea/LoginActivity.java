@@ -13,10 +13,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.example.idea.Types.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 /**
  * Created by Akshay Raj on 10/17/2016.
  * Snow Corporation Inc.
@@ -25,11 +31,14 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity {
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
+    private DatabaseReference dbRef;
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Get Database instance reference
+        dbRef = FirebaseDatabase.getInstance().getReference();
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
@@ -95,9 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                     }
                                 } else {
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    onAuthSuccess(task.getResult().getUser());
                                 }
                             }
                         });
@@ -146,5 +153,45 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         dialog.show();
+    }
+
+    /**
+     * When sign in task is successful, function is called.
+     * @param user
+     */
+    private void onAuthSuccess(FirebaseUser user) {
+        String username = usernameFromEmail(user.getEmail());
+
+        // Write new user
+        writeNewUser(user.getUid(), username, user.getEmail());
+
+        // Go to MainActivity
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
+    }
+
+    /**
+     * Splits up email by at symbol.
+     * @param email
+     * @return username
+     */
+    private String usernameFromEmail(String email) {
+        if (email.contains("@")) {
+            return email.split("@")[0];
+        } else {
+            return email;
+        }
+    }
+
+    /**
+     * User created through firebase authentication written to realtime database.
+     * @param userId
+     * @param name
+     * @param email
+     */
+    private void writeNewUser(String userId, String name, String email) {
+        User user = new User(userId, name, email);
+
+        dbRef.child("users").child(userId).setValue(user);
     }
 }
