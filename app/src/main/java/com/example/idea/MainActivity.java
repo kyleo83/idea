@@ -31,8 +31,11 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.OnNextClickListener,ProfileFragment.OnNextClickListener,AboutFragment.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
@@ -58,13 +61,65 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
     boolean logout = false;
 
-
+    //declares spinner dropdown
+    MaterialSpinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //gets spinner reference
+        spinner = findViewById(R.id.spinner);
+
+        //adds tags to spinner array
+        final ArrayList<String> list = new ArrayList<>();
+        list.add("Kitchen");
+        list.add("Bathroom");
+        list.add("Livingroom");
+        list.add("Bedroom");
+        list.add("Interior");
+        list.add("Landscape");
+        list.add("Architecture");
+        list.add("Design");
+        spinner.setItems(list);
+
+        //adds listener for selected tag
+        spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                Toast.makeText(MainActivity.this, "Tag : " + list.get(position), Toast.LENGTH_SHORT).show();
+
+                //switches between spinner selections
+                String tag = list.get(position);
+                switch (tag) {
+                    case "Kitchen":
+                        //Show kitchens
+                        break;
+                    case "Bathroom":
+                        //Show Bathrooms
+                        break;
+                    case "Livingroom":
+                        //Show Livingrooms
+                        break;
+                    case "Bedroom":
+                        //Show Bedrooms
+                        break;
+                    case "Interior":
+                        //Show Interiors
+                        break;
+                    case "Landscape":
+                        //Show Landscapes
+                        break;
+                    case "Architecture":
+                        //Show Architectures
+                        break;
+                    case "Design":
+                        //Show Designs
+                        break;
+                }
+            }
+        });
 
         //start of fragment, navigation, and toolbar references
 
@@ -115,6 +170,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
             }
         };
 
+    }
+    public String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
     //sign out method
     public void signOut() {
