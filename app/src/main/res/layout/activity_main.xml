@@ -18,6 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <!--adds spinner to LinearLayout -->
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="20dp"/>
+
     <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragment_host"
@@ -25,8 +33,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#bdd9d4">
-
-
     </FrameLayout>
 
     </LinearLayout>
