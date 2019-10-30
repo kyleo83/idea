@@ -38,6 +38,7 @@ public class DesignCard {
             mSwipeView = swipeView;
         }
 
+        // TODO change to implement our Types in DesignCard
         @Resolve
         private void onResolved(){
             Glide.with(mContext).load(mdesign.getImageUrl()).into(profileImageView);
