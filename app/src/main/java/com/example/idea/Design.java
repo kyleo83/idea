@@ -12,7 +12,7 @@ public class Design {
     @Expose
     private String imageUrl;
 
-
+    // TODO can delete once DesignCard integrate with Types
     public String getName() {
         return name;
     }
