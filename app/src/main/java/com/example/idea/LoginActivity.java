@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Go to MainActivity
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
-        finish();
+//        finish();
     }
 
     /**
@@ -147,6 +147,6 @@ public class LoginActivity extends AppCompatActivity {
     private void writeNewUser(String userId, String name, String email) {
         User user = new User(userId, name, email);
 
-        dbRef.child("users").child(userId).setValue(user);
+        dbRef.child("users").child(userId).setValue(user.getDisplayName());
     }
 }
