@@ -1,6 +1,5 @@
 package com.example.idea;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -11,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
-
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 
@@ -22,7 +19,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private View v;
     Context context = getContext();
-
 
     public HomeFragment() {
 
@@ -70,7 +66,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         return v;
 
-
     }
 
     public interface OnNextClickListener {
@@ -81,10 +76,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onAttach(Context context) {
-
         super.onAttach(context);
-
-
 
         try {
             listener = (OnNextClickListener) context;
