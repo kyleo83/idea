@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 toast = Toast.makeText(this,
                         "profile Fragment", Toast.LENGTH_SHORT);
                 toast.show();
-//                newFragment = new ProfileFragment();
+                newFragment = new ProfileFragment();
                 break;
 
             case R.id.Signout:
@@ -280,8 +280,5 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
     }
 
     //end of fragment selector, toolbar menu, and navigation menu selection functions
-
-
-
 }
 
