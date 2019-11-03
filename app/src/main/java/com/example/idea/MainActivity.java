@@ -1,8 +1,6 @@
 package com.example.idea;
 
 import android.content.Context;
-import android.graphics.Point;
-
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,33 +11,22 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import android.view.View;
-
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.TextView;
-
 import android.widget.Toast;
-
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
 import com.jaredrummler.materialspinner.MaterialSpinner;
-import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
-
 import java.util.ArrayList;
 
-
 public class MainActivity extends AppCompatActivity implements HomeFragment.OnNextClickListener,ProfileFragment.OnNextClickListener,AboutFragment.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
-
 
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
@@ -48,8 +35,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
     private Button signOut;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
-
-
 
     //declares variables for Tags, Navigation, DrawerLayout, and Toolbar
     private static final String TAG = "MainActivity";
@@ -149,10 +134,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
         //end of fragment, navigation, and toolbar references
 
-
-
-
-
         auth = FirebaseAuth.getInstance();
         //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -193,9 +174,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         }
     }
 
-
-
-
     //start of fragment selector, toolbar menu, and navigation menu selection functions
 
     //sets fragment selected
@@ -211,10 +189,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
         transaction.replace(R.id.fragment_host, newFragment);
         transaction.addToBackStack(null);
-
         transaction.commit();
     }
 
@@ -256,8 +232,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         }
     }
 
-
-
     //switch cases for choosing fragments
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -271,6 +245,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                         "Home Fragment", Toast.LENGTH_SHORT);
                 toast.show();
                 newFragment = new HomeFragment();
+                //adds spinner back to home fragment
+                spinner.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.nav_about:
@@ -279,6 +255,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                         "About Fragment", Toast.LENGTH_SHORT);
                 toast.show();
                 newFragment = new AboutFragment();
+                //removes spinner from about fragment
+                spinner.setVisibility(View.GONE);
                 break;
 
             case R.id.profile:
@@ -286,7 +264,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 toast = Toast.makeText(this,
                         "profile Fragment", Toast.LENGTH_SHORT);
                 toast.show();
-//                newFragment = new ProfileFragment();
+                //newFragment = new ProfileFragment();
+                //removes spinner from profile fragment
+                spinner.setVisibility(View.GONE);
                 break;
 
             case R.id.Signout:
@@ -296,6 +276,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 toast = Toast.makeText(this,
                         "sign out", Toast.LENGTH_SHORT);
                 toast.show();
+                //removes spinner from logout fragment
+                spinner.setVisibility(View.GONE);
 
 //                auth.getCurrentUser().unlink(auth.getCurrentUser().getProviderId());
 //                signOut();
@@ -303,10 +285,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 signOut();
                 break;
 
-
-
             default:
                 newFragment = new HomeFragment();
+                //adds spinner back to home fragment
+                spinner.setVisibility(View.VISIBLE);
                 break;
         }
         //closes drawer
@@ -322,7 +304,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
             transaction.commit();
         }
-
 
         return false;
     }
