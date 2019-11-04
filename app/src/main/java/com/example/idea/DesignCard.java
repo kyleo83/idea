@@ -39,12 +39,10 @@ public class DesignCard {
             mSwipeView = swipeView;
         }
 
-        // TODO change to implement our Types in DesignCard
         @Resolve
         private void onResolved(){
-            Glide.with(mContext).load(mdesign.getImageUrl()).into(profileImageView);
-            nameAgeTxt.setText("#"+ mdesign.getName() );
-
+            Glide.with(mContext).load(mdesign.getUrl()).into(profileImageView);
+            nameAgeTxt.setText("#"+ mdesign.getName());
         }
 
         @SwipeOut

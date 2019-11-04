@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +15,26 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.example.idea.Types.Design;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private SwipePlaceHolderView mSwipeView;
+    private FirebaseFirestore db;
 
     private View v;
     Context context = getContext();
+
+    private static final String TAG = "HomeFragment";
 
 
     public HomeFragment() {
@@ -33,6 +46,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         v = inflater.inflate(R.layout.fragment_home, container, false);
         mSwipeView = v.findViewById(R.id.swipeView);
+        db = FirebaseFirestore.getInstance();
 
         int bottomMargin = Utils.dpToPx(160);
         WindowManager windowManager = getActivity().getWindowManager();
@@ -53,6 +67,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         for(Design design : Utils.loadDesigns(getActivity())){
             mSwipeView.addView(new DesignCard(getActivity(), design, mSwipeView));
         }
+        // TODO : switch these out after better data in => better data out
+//        for(Design design : loadAllDesigns(db)){
+//            mSwipeView.addView(new DesignCard(getActivity(), design, mSwipeView));
+//        }
 
         v.findViewById(R.id.cancelBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,5 +131,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             listener.OnHomeFragmentNextClick(this);
         }
     }
+
+    public static List<Design> loadAllDesigns(FirebaseFirestore db) {
+        final List<Design> designs = new ArrayList<>();
+        db.collection("ideas")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Design newDesign = document.toObject(Design.class);
+                                designs.add(newDesign);
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        return designs;
+    }
+
 
 }

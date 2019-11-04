@@ -332,8 +332,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
      * @return String uid
      */
     public String getCurrentUserUid() {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        return null;
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
 }

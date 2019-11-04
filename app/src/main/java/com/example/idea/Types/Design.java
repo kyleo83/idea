@@ -14,6 +14,10 @@ public class Design {
 
     @SerializedName("url")
     @Expose
+    private String url;
+
+    @SerializedName("image_url")
+    @Expose
     private String imageUrl;
 
     @SerializedName("picture_id")
@@ -35,6 +39,14 @@ public class Design {
         this.name = name;
     }
 
+    public String getUrl() {
+        return imageUrl;
+    }
+
+    public void setUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -48,7 +60,7 @@ public class Design {
     }
 
     private void setId(String id) {
-        this.designId = id;
+        this.designId = String.valueOf(id);
     }
 
     public String getPictureId() {
