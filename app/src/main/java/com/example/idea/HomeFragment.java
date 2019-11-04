@@ -14,12 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+
 import com.example.idea.Types.Design;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 
@@ -34,7 +36,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private View v;
     Context context = getContext();
 
+
     private static final String TAG = "HomeFragment";
+
 
 
     public HomeFragment() {
@@ -96,7 +100,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         return v;
 
-
     }
 
     public interface OnNextClickListener {
@@ -107,10 +110,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onAttach(Context context) {
-
         super.onAttach(context);
-
-
 
         try {
             listener = (OnNextClickListener) context;
