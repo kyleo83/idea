@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".AboutFragment"/>
+    android:layout_height="match_parent">
+
+
+
+    <TextView
+        android:id="@+id/titleView"
+        tools:text="Hello World"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:fontFamily="@font/jomolhari"
+        android:text="about the app"
+        android:textSize="40dp"
+        android:layout_margin="5dp"
+        />
+
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="500dp">
+
+    <TextView
+        android:id="@+id/aboutView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/jomolhari"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam scelerisque magna sed odio pulvinar, eget mollis leo tempus. Proin a orci at augue porta faucibus sed sit amet nibh. Donec at convallis enim. Ut ipsum odio, blandit a rutrum et, rutrum ut felis. Morbi volutpat ante turpis, quis commodo ipsum congue eu. Donec imperdiet lectus quis mollis eleifend. Maecenas elementum turpis id egestas tincidunt. Aliquam eget mauris ac ex sollicitudin aliquam. Fusce molestie sollicitudin hendrerit. Maecenas magna mauris, dictum eget tristique at, vehicula a justo. Nulla tristique ipsum est, in rutrum metus ultricies eget. Cras vitae tempus odio. Nullam vel sodales tellus. Mauris a convallis arcu, sed tincidunt tellus. Suspendisse ultrices nisi nec tellus sodales, ac viverra massa blandit.
+Proin sagittis molestie diam, vitae viverra justo hendrerit ac. Praesent non facilisis turpis. Nullam tincidunt mattis mi. Donec pellentesque tempus tortor, eu blandit augue vehicula sed. Morbi facilisis dapibus dui, quis eleifend nisl. Donec tempus in orci sit amet malesuada. Aenean fringilla velit turpis, id sodales magna vehicula in. Praesent maximus augue ut ipsum aliquet, id semper felis mollis. Vivamus pretium nisl pulvinar gravida maximus. Nullam aliquet dolor ante, et egestas mauris tristique id. Cras quis fermentum sapien, vel dapibus quam. Maecenas sagittis quam in mauris rutrum, et sollicitudin nunc lobortis.
+Curabitur tempor magna nec mauris pharetra malesuada. In elementum eros id sollicitudin vestibulum. Integer convallis ut enim eu vehicula. Phasellus sollicitudin turpis sed congue dapibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Quisque at lacus massa. In non quam pellentesque diam dapibus gravida sit amet egestas velit. Morbi tellus est, mollis dictum nunc at, scelerisque sollicitudin dui. Curabitur eget sem posuere, accumsan orci in, faucibus odio. Sed ullamcorper mi sed quam lobortis, et porttitor eros sollicitudin. Pellentesque nec placerat quam, ut pellentesque tellus. Mauris auctor, diam dapibus pharetra lacinia, nunc lorem euismod leo, id efficitur orci nulla non nibh.
+Nunc et rhoncus dolor, non vulputate risus. Nam nec pellentesque erat. Morbi dui eros, semper et pellentesque nec, tincidunt ac turpis. Etiam at dui velit. Morbi blandit gravida commodo. Donec porttitor auctor maximus. Curabitur posuere lorem velit, at pulvinar ante congue eu. Phasellus sit amet volutpat augue. Morbi vitae aliquam elit, sed hendrerit mi. Donec vehicula vestibulum nulla at varius. Sed eu neque quis diam consectetur elementum egestas efficitur mi. Duis eu sem id erat lobortis mattis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas imperdiet molestie metus, a tempus elit ullamcorper et. Etiam pulvinar tortor et ipsum fringilla blandit. Duis rutrum aliquet venenatis.
+Nunc cursus arcu eget scelerisque elementum. Donec elementum auctor ultrices. Duis accumsan sodales urna eget gravida. Nunc et lobortis diam, ut scelerisque justo. Cras ipsum sapien, vulputate eu nulla in, aliquam pulvinar purus. Ut cursus at urna vel blandit. Fusce nec est sit amet lectus pharetra efficitur. Phasellus nec imperdiet urna, nec faucibus lorem. Aenean sit amet tellus ac velit ullamcorper facilisis. Proin lacus quam, tempor eget ultrices nec, mollis ac ligula. Quisque interdum, nisl at finibus finibus, ligula leo laoreet lacus, ac iaculis nisl lorem ut augue. Mauris viverra rhoncus condimentum. Vestibulum mattis felis eget tempor sodales. Morbi feugiat ullamcorper nibh, ultricies sagittis dolor eleifend eget."
+        android:layout_margin="5dp"
+        android:textSize="25dp" />
+
+
+
+</android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>
