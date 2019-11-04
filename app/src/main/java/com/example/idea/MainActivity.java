@@ -38,17 +38,18 @@ import com.mindorks.placeholderview.SwipePlaceHolderView;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnNextClickListener,ProfileFragment.OnNextClickListener,AboutFragment.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnNextClickListener,
+        ProfileFragment.OnNextClickListener, OwnerFragment.OnNextClickListener,
+        AboutFragment.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
 
-
+    public static final String ADMIN_EMAIL = "bentunigold@gmail.com";
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
 
-    private TextView email;
+    private String email;
     private Button signOut;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
-
 
 
     //declares variables for Tags, Navigation, DrawerLayout, and Toolbar
@@ -149,13 +150,15 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
         //end of fragment, navigation, and toolbar references
 
-
-
-
-
         auth = FirebaseAuth.getInstance();
-        //get current user
+        //get current user and email
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        email = user.getEmail();
+
+        //hide or display Submission menu item in Navigation Drawer
+        Menu nav_Menu = navigationView.getMenu();
+        nav_Menu.findItem(R.id.nav_owner).setVisible(email.equals(ADMIN_EMAIL));
+
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -192,9 +195,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
             auth.removeAuthStateListener(authListener);
         }
     }
-
-
-
 
     //start of fragment selector, toolbar menu, and navigation menu selection functions
 
@@ -256,13 +256,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         }
     }
 
-
-
     //switch cases for choosing fragments
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Toast toast;
-
 
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
@@ -271,6 +268,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                         "Home Fragment", Toast.LENGTH_SHORT);
                 toast.show();
                 newFragment = new HomeFragment();
+                //add spinner to home fragment
+                spinner.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.nav_about:
@@ -279,6 +278,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                         "About Fragment", Toast.LENGTH_SHORT);
                 toast.show();
                 newFragment = new AboutFragment();
+                //removes spinner from about fragment
+                spinner.setVisibility(View.GONE);
                 break;
 
             case R.id.profile:
@@ -286,7 +287,19 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 toast = Toast.makeText(this,
                         "profile Fragment", Toast.LENGTH_SHORT);
                 toast.show();
-//                newFragment = new ProfileFragment();
+                newFragment = new ProfileFragment();
+                //removes spinner from profile fragment
+                spinner.setVisibility(View.GONE);
+                break;
+
+            case R.id.nav_owner:
+                Log.i(TAG, "owner");
+                toast = Toast.makeText(this,
+                        "Owner Fragment", Toast.LENGTH_SHORT);
+                toast.show();
+                newFragment = new OwnerFragment();
+                //remove spinner from owner fragment
+                spinner.setVisibility(View.GONE);
                 break;
 
             case R.id.Signout:
@@ -334,6 +347,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
     @Override
     public void OnProfileFragmentNextClick(ProfileFragment fragment) {
+
+    }
+
+    @Override
+    public void OnOwnerFragmentNextClick(OwnerFragment fragment) {
 
     }
 
