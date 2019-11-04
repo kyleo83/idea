@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.example.idea.Types.Design;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
