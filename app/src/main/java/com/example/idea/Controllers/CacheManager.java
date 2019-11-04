@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.preference.PreferenceManager;
 
 import com.example.idea.MainActivity;
-import com.example.idea.Types.User;
 
 import java.util.HashMap;
 

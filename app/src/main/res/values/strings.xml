@@ -39,5 +39,6 @@
     <string name="fragment_about">About Fragment</string>
     <string name="fragment_home_next">Next Fragment</string>
     <string name="change_password">Change password</string>
+    <string name="login">Login</string>
 
 </resources>
