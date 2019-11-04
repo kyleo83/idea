@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.example.idea.Types.Design;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -76,6 +78,16 @@ public class Utils {
     }
     public static int dpToPx(int dp) {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
+    }
+
+
+    /**
+     * Gets the uid from current user through FirebaseAuth.
+     * Catches NullPointerException.
+     * @return String uid
+     */
+    public static String getCurrentUserUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
 }

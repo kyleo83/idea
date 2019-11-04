@@ -1,6 +1,12 @@
 package com.example.idea;
 
 import android.content.Context;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+
+
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,19 +15,27 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.idea.Controllers.CacheManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import android.view.View;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
+
+
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 import java.util.ArrayList;
@@ -30,11 +44,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
-
+    private CacheManager cacheManager;
     private TextView email;
     private Button signOut;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
+    private FirebaseFirestore db;
 
     //declares variables for Tags, Navigation, DrawerLayout, and Toolbar
     private static final String TAG = "MainActivity";
@@ -53,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        db = FirebaseFirestore.getInstance();
 
         //gets spinner reference
         spinner = findViewById(R.id.spinner);
@@ -134,9 +150,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
         //end of fragment, navigation, and toolbar references
 
+
         auth = FirebaseAuth.getInstance();
-        //get current user
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -150,11 +165,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 }
             }
         };
+    }
 
-    }
-    public String getUid() {
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
-    }
     //sign out method
     public void signOut() {
         auth.signOut();
@@ -322,5 +334,19 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
     }
 
     //end of fragment selector, toolbar menu, and navigation menu selection functions
+
+
+
+
+    /**
+     * Gets the uid from current user through FirebaseAuth.
+     * Catches NullPointerException.
+     * @return String uid
+     */
+    public String getCurrentUserUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+
 }
 
