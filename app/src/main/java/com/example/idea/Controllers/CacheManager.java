@@ -32,6 +32,7 @@ public class CacheManager {
     public static final String KEY_ID = "id";
 
     // Constructor
+    public CacheManager() {}
     @SuppressLint("CommitPrefEdits")
     public CacheManager(Context context) {
         this._context = context;

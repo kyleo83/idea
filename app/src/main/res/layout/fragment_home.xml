@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,6 +43,14 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="30dp"
                 android:background="@mipmap/ic_add"/>
+
+            <ImageButton
+                android:id="@+id/uploadBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="30dp"
+                android:background="@mipmap/ic_upload"/>
+
 
         </LinearLayout>
 

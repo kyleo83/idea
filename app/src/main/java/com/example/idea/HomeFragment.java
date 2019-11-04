@@ -1,7 +1,7 @@
 package com.example.idea;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
-
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 
@@ -22,7 +20,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private View v;
     Context context = getContext();
-
 
     public HomeFragment() {
 
@@ -68,8 +65,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             }
         });
 
-        return v;
+        v.findViewById(R.id.uploadBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), UploadActivity.class)) ;
+            }
+        });
 
+
+        return v;
 
     }
 
@@ -81,10 +85,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onAttach(Context context) {
-
         super.onAttach(context);
-
-
 
         try {
             listener = (OnNextClickListener) context;
