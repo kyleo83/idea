@@ -12,6 +12,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH>
@@ -35,6 +36,8 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
             onError(e);
             return;
         }
+        final List<DocumentChange> changes = documentSnapshots.getDocumentChanges();
+        final DocumentSnapshot lastDocument = changes.get(changes.size() - 1).getDocument();
 
         // Dispatch the event
         Log.d(TAG, "onEvent:numChanges:" + documentSnapshots.getDocumentChanges().size());
