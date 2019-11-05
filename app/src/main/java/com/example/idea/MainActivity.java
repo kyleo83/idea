@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.example.idea.Controllers.CacheManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,16 +41,26 @@ import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnNextClickListener,ProfileFragment.OnNextClickListener,AboutFragment.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
 
+
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnNextClickListener,
+        ProfileFragment.OnNextClickListener, OwnerFragment.OnNextClickListener,
+        AboutFragmen
+        t.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
+
+    public static final String ADMIN_EMAIL = "bentunigold@gmail.com";
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
-    private CacheManager cacheManager;
+    
+    private String email;
+    private CacheManager cacheManager; 
     private TextView email;
     private Button signOut;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
+
+
 
     //declares variables for Tags, Navigation, DrawerLayout, and Toolbar
     private static final String TAG = "MainActivity";
@@ -152,6 +163,16 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
 
         auth = FirebaseAuth.getInstance();
+        //get current user and email
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        email = user.getEmail();
+
+        //hide or display Submission menu item in Navigation Drawer
+        Menu nav_Menu = navigationView.getMenu();
+        nav_Menu.findItem(R.id.nav_owner).setVisible(email.equals(ADMIN_EMAIL));
+
+
+
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -249,7 +270,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Toast toast;
 
-
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 Log.i(TAG, "home clicked");
@@ -257,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                         "Home Fragment", Toast.LENGTH_SHORT);
                 toast.show();
                 newFragment = new HomeFragment();
-                //adds spinner back to home fragment
+
                 spinner.setVisibility(View.VISIBLE);
                 break;
 
@@ -278,9 +298,19 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 toast.show();
 
                 newFragment = new ProfileFragment();
-
-                //newFragment = new ProfileFragment();
                 //removes spinner from profile fragment
+                spinner.setVisibility(View.GONE);
+                break;
+
+            case R.id.nav_owner:
+                Log.i(TAG, "owner");
+                toast = Toast.makeText(this,
+                        "Owner Fragment", Toast.LENGTH_SHORT);
+                toast.show();
+                newFragment = new OwnerFragment();
+                //remove spinner from owner fragment
+
+                newFragment = new ProfileFragment();
                 spinner.setVisibility(View.GONE);
                 break;
 
@@ -330,6 +360,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
     @Override
     public void OnProfileFragmentNextClick(ProfileFragment fragment) {
+
+    }
+
+    @Override
+    public void OnOwnerFragmentNextClick(OwnerFragment fragment) {
 
     }
 
