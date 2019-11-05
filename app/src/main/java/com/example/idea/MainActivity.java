@@ -314,10 +314,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 toast = Toast.makeText(this,
                         "Owner Fragment", Toast.LENGTH_SHORT);
                 toast.show();
+                
                 newFragment = new OwnerFragment();
                 //remove spinner from owner fragment
-
-                newFragment = new ProfileFragment();
                 spinner.setVisibility(View.GONE);
                 break;
 
