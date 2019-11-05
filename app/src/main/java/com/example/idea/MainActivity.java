@@ -256,6 +256,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 toast = Toast.makeText(this,
                         "Share clicked", Toast.LENGTH_SHORT);
                 toast.show();
+                //adds sharing options
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = "Your body here";
+                String shareSub = "Your subject here";
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareSub);
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share Image Using:"));
                 return true;
 
             default:
