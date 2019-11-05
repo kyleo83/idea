@@ -45,8 +45,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.OnNextClickListener,
         ProfileFragment.OnNextClickListener, OwnerFragment.OnNextClickListener,
-        AboutFragmen
-        t.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
+        AboutFragment.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
 
     public static final String ADMIN_EMAIL = "bentunigold@gmail.com";
     private SwipePlaceHolderView mSwipeView;
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
     
     private String email;
     private CacheManager cacheManager; 
-    private TextView email;
+    private TextView emailView;
     private Button signOut;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
