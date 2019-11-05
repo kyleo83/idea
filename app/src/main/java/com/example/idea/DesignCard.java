@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.idea.Types.Design;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 import com.mindorks.placeholderview.annotations.Layout;
 import com.mindorks.placeholderview.annotations.Resolve;
@@ -38,12 +39,10 @@ public class DesignCard {
             mSwipeView = swipeView;
         }
 
-        // TODO change to implement our Types in DesignCard
         @Resolve
         private void onResolved(){
-            Glide.with(mContext).load(mdesign.getImageUrl()).into(profileImageView);
-            nameAgeTxt.setText("#"+ mdesign.getName() );
-
+            Glide.with(mContext).load(mdesign.getUrl()).into(profileImageView);
+            nameAgeTxt.setText("#"+ mdesign.getName());
         }
 
         @SwipeOut

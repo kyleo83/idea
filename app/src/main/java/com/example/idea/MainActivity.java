@@ -1,7 +1,11 @@
 package com.example.idea;
 
 import android.content.Context;
-import android.graphics.Point;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+
 
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -11,45 +15,51 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import android.view.View;
-
-import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.TextView;
-
 import android.widget.Toast;
 
 
+import com.example.idea.Controllers.CacheManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import android.view.View;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.Toolbar;
+
+
 
 import com.jaredrummler.materialspinner.MaterialSpinner;
-import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
-
 import java.util.ArrayList;
+
 
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.OnNextClickListener,
         ProfileFragment.OnNextClickListener, OwnerFragment.OnNextClickListener,
-        AboutFragment.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
+        AboutFragmen
+        t.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
 
     public static final String ADMIN_EMAIL = "bentunigold@gmail.com";
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
-
+    
     private String email;
+    private CacheManager cacheManager; 
+    private TextView email;
     private Button signOut;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
+    private FirebaseFirestore db;
+
 
 
     //declares variables for Tags, Navigation, DrawerLayout, and Toolbar
@@ -69,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        db = FirebaseFirestore.getInstance();
 
         //gets spinner reference
         spinner = findViewById(R.id.spinner);
@@ -150,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
         //end of fragment, navigation, and toolbar references
 
+
         auth = FirebaseAuth.getInstance();
         //get current user and email
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -158,6 +170,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         //hide or display Submission menu item in Navigation Drawer
         Menu nav_Menu = navigationView.getMenu();
         nav_Menu.findItem(R.id.nav_owner).setVisible(email.equals(ADMIN_EMAIL));
+
+
 
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -172,11 +186,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 }
             }
         };
+    }
 
-    }
-    public String getUid() {
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
-    }
     //sign out method
     public void signOut() {
         auth.signOut();
@@ -211,10 +222,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
         transaction.replace(R.id.fragment_host, newFragment);
         transaction.addToBackStack(null);
-
         transaction.commit();
     }
 
@@ -268,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                         "Home Fragment", Toast.LENGTH_SHORT);
                 toast.show();
                 newFragment = new HomeFragment();
-                //add spinner to home fragment
+
                 spinner.setVisibility(View.VISIBLE);
                 break;
 
@@ -287,6 +296,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 toast = Toast.makeText(this,
                         "profile Fragment", Toast.LENGTH_SHORT);
                 toast.show();
+
                 newFragment = new ProfileFragment();
                 //removes spinner from profile fragment
                 spinner.setVisibility(View.GONE);
@@ -299,6 +309,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 toast.show();
                 newFragment = new OwnerFragment();
                 //remove spinner from owner fragment
+
+                newFragment = new ProfileFragment();
                 spinner.setVisibility(View.GONE);
                 break;
 
@@ -309,6 +321,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 toast = Toast.makeText(this,
                         "sign out", Toast.LENGTH_SHORT);
                 toast.show();
+                //removes spinner from logout fragment
+                spinner.setVisibility(View.GONE);
 
 //                auth.getCurrentUser().unlink(auth.getCurrentUser().getProviderId());
 //                signOut();
@@ -316,10 +330,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 signOut();
                 break;
 
-
-
             default:
                 newFragment = new HomeFragment();
+                //adds spinner back to home fragment
+                spinner.setVisibility(View.VISIBLE);
                 break;
         }
         //closes drawer
@@ -335,7 +349,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
             transaction.commit();
         }
-
 
         return false;
     }
@@ -357,6 +370,17 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
     //end of fragment selector, toolbar menu, and navigation menu selection functions
 
+
+
+
+    /**
+     * Gets the uid from current user through FirebaseAuth.
+     * Catches NullPointerException.
+     * @return String uid
+     */
+    public String getCurrentUserUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
 
 
 }
