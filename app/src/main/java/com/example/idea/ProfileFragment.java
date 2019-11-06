@@ -40,6 +40,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         // maps info to userData var for reference
         getUserInfo(db);
