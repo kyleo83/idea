@@ -163,15 +163,15 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
         auth = FirebaseAuth.getInstance();
         //get current user and email
+
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        email = user.getEmail();
-
         //hide or display Submission menu item in Navigation Drawer
-        Menu nav_Menu = navigationView.getMenu();
-        nav_Menu.findItem(R.id.nav_owner).setVisible(email.equals(ADMIN_EMAIL));
-
-
-
+        if (user != null) {
+            email = user.getEmail();
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.nav_owner).setVisible(email.equals(ADMIN_EMAIL));
+        }
+        
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
