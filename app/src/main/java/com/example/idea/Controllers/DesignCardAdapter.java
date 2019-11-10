@@ -46,10 +46,10 @@ public class DesignCardAdapter extends FirestoreAdapter<DesignCardAdapter.ViewHo
     private void paginate(final DocumentSnapshot last, final int limit) {
         final Query subset;
         if (last == null) {
-            subset = db.collection("ideas")
+            subset = db.collection("pictures")
                     .limit(limit);
         } else {
-            subset = db.collection("ideas")
+            subset = db.collection("pictures")
                     .startAfter(last)
                     .limit(limit);
         }
@@ -57,7 +57,7 @@ public class DesignCardAdapter extends FirestoreAdapter<DesignCardAdapter.ViewHo
     }
 
     public void getListChunkQuery(Query query) {
-        CollectionReference ideasRef = db.collection("ideas");
-        Query firstQuery = ideasRef.orderBy("tags", Query.Direction.ASCENDING).limit(15);
+        CollectionReference picturesRef = db.collection("pictures");
+        Query firstQuery = picturesRef.orderBy("tags", Query.Direction.ASCENDING).limit(15);
     }
 }

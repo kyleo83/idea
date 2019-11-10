@@ -1,6 +1,6 @@
 package com.example.idea.Types;
 
-import static com.example.idea.Types.RoomTagDescriptor.*;
+import static com.example.idea.Types.RoomTags.*;
 
 public class Picture {
 

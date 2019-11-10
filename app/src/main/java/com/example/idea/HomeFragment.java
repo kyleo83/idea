@@ -134,7 +134,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     public static List<Design> loadAllDesigns(FirebaseFirestore db) {
         final List<Design> designs = new ArrayList<>();
-        db.collection("ideas")
+        db.collection("pictures")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

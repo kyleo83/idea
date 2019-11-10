@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.idea.Controllers.CacheManager;
+import com.example.idea.Types.RoomTags;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -67,48 +68,40 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         spinner = findViewById(R.id.spinner);
 
         //adds tags to spinner array
-        final ArrayList<String> list = new ArrayList<>();
-        list.add("Kitchen");
-        list.add("Bathroom");
-        list.add("Livingroom");
-        list.add("Bedroom");
-        list.add("Interior");
-        list.add("Landscape");
-        list.add("Architecture");
-        list.add("Design");
-        spinner.setItems(list);
+        RoomTags.Tags tags = new RoomTags.Tags();
+        final ArrayList<String> tagList = new ArrayList<>((tags.getTags(db)));
 
         //adds listener for selected tag
         spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                Toast.makeText(MainActivity.this, "Tag : " + list.get(position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Tag : " + tagList.get(position), Toast.LENGTH_SHORT).show();
 
                 //switches between spinner selections
-                String tag = list.get(position);
+                String tag = tagList.get(position);
                 switch (tag) {
-                    case "Kitchen":
+                    case "kitchen":
                         //Show kitchens
                         break;
-                    case "Bathroom":
+                    case "bathroom":
                         //Show Bathrooms
                         break;
-                    case "Livingroom":
+                    case "living room":
                         //Show Livingrooms
                         break;
-                    case "Bedroom":
+                    case "bedroom":
                         //Show Bedrooms
                         break;
-                    case "Interior":
+                    case "interior":
                         //Show Interiors
                         break;
-                    case "Landscape":
+                    case "landscape":
                         //Show Landscapes
                         break;
-                    case "Architecture":
+                    case "architecture":
                         //Show Architectures
                         break;
-                    case "Design":
+                    case "design":
                         //Show Designs
                         break;
                 }

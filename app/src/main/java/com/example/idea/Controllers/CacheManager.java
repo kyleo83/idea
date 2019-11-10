@@ -46,7 +46,7 @@ public class CacheManager {
         editor.putBoolean(IS_LOGIN, true);
         // Storing name in pref
         editor.putString(KEY_NAME, name);
-        // Storing ideas seen
+        // Storing pictures seen
         editor.putInt(KEY_ID, id);
         // commit changes
         editor.commit();

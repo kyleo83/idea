@@ -13,7 +13,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
-public class RoomTagDescriptor {
+public class RoomTags {
 
     private static final String TAG = "RoomTagDescriptor";
 
@@ -25,13 +25,12 @@ public class RoomTagDescriptor {
     // Interface for validating String types
     public @interface RoomTagDef{}
 
-
     // Marks the arg as restricted to the enumerated types
-    public RoomTagDescriptor(@RoomTagDef String roomTag) {
+    public RoomTags(@RoomTagDef String roomTag) {
         this.roomTag = roomTag;
     }
 
-    public class Tags {
+    public static class Tags {
         private ArrayList<String> tagList;
 
         public Tags() {
@@ -44,6 +43,7 @@ public class RoomTagDescriptor {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d(TAG, document.getString("name"));
                             tagList.add(document.getString("name"));
                         }
                         Log.d(TAG, tagList.toString());
