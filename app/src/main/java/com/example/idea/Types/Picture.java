@@ -1,7 +1,5 @@
 package com.example.idea.Types;
 
-import static com.example.idea.Types.RoomTags.*;
-
 public class Picture {
 
     private int id;
@@ -11,7 +9,7 @@ public class Picture {
     // Constructor
     public Picture() {
     }
-    public Picture(int id, String sourceUrl, @RoomTagDef String roomTag) {
+    public Picture(int id, String sourceUrl, String roomTag) {
         setId(id);
         setSourceUrl(sourceUrl);
         setRoomTag(roomTag);
@@ -37,7 +35,7 @@ public class Picture {
         return roomTag;
     }
 
-    public void setRoomTag(@RoomTagDef String roomTag) {
+    public void setRoomTag(String roomTag) {
         this.roomTag = roomTag;
     }
 }
