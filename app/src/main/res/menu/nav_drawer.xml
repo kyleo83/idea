@@ -17,6 +17,10 @@
             android:icon="@android:drawable/sym_action_chat"
             android:title="Profile" />
 
+        <item
+            android:id="@+id/nav_owner"
+            android:icon="@android:drawable/sym_action_chat"
+            android:title="Submissions"/>
 
         <item
             android:id="@+id/Signout"

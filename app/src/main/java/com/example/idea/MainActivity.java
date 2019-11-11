@@ -1,9 +1,12 @@
 package com.example.idea;
 
 import android.content.Context;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+
+
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,27 +19,41 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.example.idea.Controllers.CacheManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import android.view.View;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.Toolbar;
+
+
+
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
-
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnNextClickListener,ProfileFragment.OnNextClickListener,AboutFragment.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
 
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnNextClickListener,
+        ProfileFragment.OnNextClickListener, OwnerFragment.OnNextClickListener,
+        AboutFragment.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
 
+    public static final String ADMIN_EMAIL = "bentunigold@gmail.com";
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
-    private CacheManager cacheManager;
-    private TextView email;
+    
+    private String email;
+    private CacheManager cacheManager; 
+    private TextView emailView;
     private Button signOut;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
@@ -142,8 +159,17 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         //end of fragment, navigation, and toolbar references
 
 
-
         auth = FirebaseAuth.getInstance();
+        //get current user and email
+
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //hide or display Submission menu item in Navigation Drawer
+        if (user != null) {
+            email = user.getEmail();
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.nav_owner).setVisible(email.equals(ADMIN_EMAIL));
+        }
+        
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -178,7 +204,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         }
     }
 
-
     //start of fragment selector, toolbar menu, and navigation menu selection functions
 
     //sets fragment selected
@@ -194,10 +219,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
         transaction.replace(R.id.fragment_host, newFragment);
         transaction.addToBackStack(null);
-
         transaction.commit();
     }
 
@@ -231,6 +254,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 toast = Toast.makeText(this,
                         "Share clicked", Toast.LENGTH_SHORT);
                 toast.show();
+                //adds sharing options
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = "Your body here";
+                String shareSub = "Your subject here";
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareSub);
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share Image Using:"));
                 return true;
 
             default:
@@ -239,13 +270,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         }
     }
 
-
-
     //switch cases for choosing fragments
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Toast toast;
-
 
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
@@ -254,6 +282,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                         "Home Fragment", Toast.LENGTH_SHORT);
                 toast.show();
                 newFragment = new HomeFragment();
+
+                spinner.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.nav_about:
@@ -262,6 +292,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                         "About Fragment", Toast.LENGTH_SHORT);
                 toast.show();
                 newFragment = new AboutFragment();
+                //removes spinner from about fragment
+                spinner.setVisibility(View.GONE);
                 break;
 
             case R.id.profile:
@@ -269,7 +301,21 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 toast = Toast.makeText(this,
                         "profile Fragment", Toast.LENGTH_SHORT);
                 toast.show();
-//                newFragment = new ProfileFragment();
+
+                newFragment = new ProfileFragment();
+                //removes spinner from profile fragment
+                spinner.setVisibility(View.GONE);
+                break;
+
+            case R.id.nav_owner:
+                Log.i(TAG, "owner");
+                toast = Toast.makeText(this,
+                        "Owner Fragment", Toast.LENGTH_SHORT);
+                toast.show();
+                
+                newFragment = new OwnerFragment();
+                //remove spinner from owner fragment
+                spinner.setVisibility(View.GONE);
                 break;
 
             case R.id.Signout:
@@ -279,6 +325,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 toast = Toast.makeText(this,
                         "sign out", Toast.LENGTH_SHORT);
                 toast.show();
+                //removes spinner from logout fragment
+                spinner.setVisibility(View.GONE);
 
 //                auth.getCurrentUser().unlink(auth.getCurrentUser().getProviderId());
 //                signOut();
@@ -286,10 +334,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 signOut();
                 break;
 
-
-
             default:
                 newFragment = new HomeFragment();
+                //adds spinner back to home fragment
+                spinner.setVisibility(View.VISIBLE);
                 break;
         }
         //closes drawer
@@ -306,7 +354,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
             transaction.commit();
         }
 
-
         return false;
     }
 
@@ -320,7 +367,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
     }
 
+    @Override
+    public void OnOwnerFragmentNextClick(OwnerFragment fragment) {
+
+    }
+
     //end of fragment selector, toolbar menu, and navigation menu selection functions
+
 
 
 
@@ -332,6 +385,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
     public String getCurrentUserUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
+
 
 }
 
