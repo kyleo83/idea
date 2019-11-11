@@ -14,14 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-
 import com.example.idea.Types.Design;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 
@@ -31,7 +29,6 @@ import java.util.List;
 public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private SwipePlaceHolderView mSwipeView;
-    private FirebaseFirestore db;
 
     private View v;
     Context context = getContext();
@@ -50,7 +47,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         v = inflater.inflate(R.layout.fragment_home, container, false);
         mSwipeView = v.findViewById(R.id.swipeView);
-        db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         int bottomMargin = Utils.dpToPx(160);
         WindowManager windowManager = getActivity().getWindowManager();
@@ -72,9 +69,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 //        }
 
         // TODO : switch these out after better data in => better data out
-        for (Design design : toDesigns(fetchAllDesignSnapshots(db))) {
-            mSwipeView.addView(new DesignCard(getActivity(), design, mSwipeView));
-        }
+        final List<QueryDocumentSnapshot> results = new ArrayList<>();
+        final List<Design> designs = new ArrayList<>();
+        fetchAllDesignSnapshots(db, results, designs);
+        Log.i(TAG, "FETCH COMPLETE");
 
         v.findViewById(R.id.cancelBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,8 +130,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private static List<QueryDocumentSnapshot> fetchAllDesignSnapshots(FirebaseFirestore db) {
-        final List<QueryDocumentSnapshot> results = new ArrayList<>();
+    private void fetchAllDesignSnapshots(FirebaseFirestore db,
+                                         final List<QueryDocumentSnapshot> results,
+                                         final List<Design> designs) {
         db.collection("pictures")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -144,16 +143,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 results.add(document);
                             }
+                            toDesigns(results, designs);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
-        return results;
     }
 
-    public List<Design> toDesigns(List<QueryDocumentSnapshot> documentSnapshotList) {
-        List<Design> designs = new ArrayList<>();
+    public void toDesigns(List<QueryDocumentSnapshot> documentSnapshotList, List<Design> designs) {
         for (QueryDocumentSnapshot doc : documentSnapshotList) {
             String designId = doc.getString("id");
             String tag = doc.getString("tag_id");
@@ -161,7 +159,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             String textDescription = doc.getString("description");
             Design newDesign = new Design(designId, tag, picUrl, textDescription);
             designs.add(newDesign);
+            mSwipeView.addView(new DesignCard(getActivity(), newDesign, mSwipeView));
+            Log.i("How many designs now: ", String.valueOf(designs.size()));
         }
-        return designs;
     }
+
 }
