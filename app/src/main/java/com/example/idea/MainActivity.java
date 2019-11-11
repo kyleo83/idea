@@ -1,12 +1,9 @@
 package com.example.idea;
 
 import android.content.Context;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-
-
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,26 +16,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.example.idea.Controllers.CacheManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import android.view.View;
-import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.Toolbar;
-
-
-
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
+
 import java.util.ArrayList;
 
 
@@ -143,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         fragmentTransaction.add(R.id.fragment_host, fragment);
         fragmentTransaction.commit();
 
-        drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle =
                 new ActionBarDrawerToggle(this, drawer, toolbar,
                         R.string.nav_open_drawer, R.string.nav_close_drawer
@@ -153,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         toggle.syncState();
 
 
-        navigationView = (NavigationView)findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         //end of fragment, navigation, and toolbar references
@@ -382,8 +371,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
      * Catches NullPointerException.
      * @return String uid
      */
-    public String getCurrentUserUid() {
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    public static FirebaseUser getCurrentUser() {
+        return FirebaseAuth.getInstance().getCurrentUser();
     }
 
 

@@ -11,7 +11,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RoomTags {
 
@@ -31,10 +31,10 @@ public class RoomTags {
     }
 
     public static class Tags {
-        private ArrayList<String> tagList;
+        private HashMap<String, String> tagList;
 
         public Tags() {
-            this.tagList = new ArrayList<>();
+            this.tagList = new HashMap<>();
         }
 
         void getTagsFromStore(FirebaseFirestore firestore) {
@@ -43,8 +43,8 @@ public class RoomTags {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d(TAG, document.getString("name"));
-                            tagList.add(document.getString("name"));
+                            Log.d(TAG, document.getString("id") + document.getId());
+                            tagList.put(document.getId(), document.getString("id"));
                         }
                         Log.d(TAG, tagList.toString());
                     } else {
@@ -54,7 +54,7 @@ public class RoomTags {
             });
         }
 
-        public ArrayList<String> getTags(FirebaseFirestore db) {
+        public HashMap<String, String> getTags(FirebaseFirestore db) {
             getTagsFromStore(db);
             return tagList;
         }

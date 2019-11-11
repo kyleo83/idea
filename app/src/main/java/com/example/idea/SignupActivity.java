@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.idea.Controllers.CacheManager;
 import com.example.idea.Types.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,6 +33,7 @@ public class SignupActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
+    CacheManager cacheManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,6 +158,7 @@ public class SignupActivity extends AppCompatActivity {
      * @param user FirebaseUser
      */
     private void onAuthSuccess(FirebaseUser user) {
+        cacheManager = new CacheManager();
         String uid = user.getUid();
         String email = user.getEmail();
         String username = User.usernameFromEmail(email);
@@ -176,7 +179,7 @@ public class SignupActivity extends AppCompatActivity {
      * @param email String
      */
     private void writeNewUser(String userId, String name, String email) {
-        User user = new User(userId, name, email);
+        final User user = new User(userId, name, email);
 
         // Add a new document with a generated ID
         db.collection("users")
@@ -185,6 +188,7 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        cacheManager.createLoginSession(Integer.parseInt(documentReference.getId()), user);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
