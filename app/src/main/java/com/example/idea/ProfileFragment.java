@@ -80,6 +80,24 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
             myTV2.setText(pref2.getString("description", null));
         }
 
+//        TextView nameTV = view.findViewById(R.id.nameView);
+//        nameTV.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                editButtonViewClicked();
+//            }
+//        });
+//
+//        TextView descriptionTV = view.findViewById(R.id.descriptionView);
+//        descriptionTV.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                editButton2ViewClicked();
+//            }
+//        });
+
+
+
 
 
 
@@ -88,7 +106,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 editButtonViewClicked();
-
             }
 
         });
@@ -101,16 +118,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         SharedPreferences pref = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
         ViewSwitcher switcher = view.findViewById(R.id.my_switcher);
         switcher.showNext(); //or switcher.showPrevious();
-        TextView myTV =  switcher.findViewById(R.id.nameView);
-        myTV.setText(pref.getString("name", null));
         EditText editText = switcher.findViewById(R.id.nameViewEdit);
         editText.setHint(pref.getString("name", null));
+
 
         SharedPreferences sharedPref = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("name", editText.getText().toString());
         editor.commit();
-
+        TextView myTV =  switcher.findViewById(R.id.nameView);
+        myTV.setText(pref.getString("name", "def"));
 
 
 
@@ -118,22 +135,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         SharedPreferences pref2 = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
         ViewSwitcher switcher2 = view.findViewById(R.id.my_switcher2);
         switcher2.showNext(); //or switcher2.showPrevious();
-        TextView myTV2 = switcher2.findViewById(R.id.descriptionView);
-        myTV2.setText(pref2.getString("description", null));
         EditText editText2 = switcher2.findViewById(R.id.descriptionViewEdit);
-//        editText2.setHint(pref2.getString("description", null));
+        editText2.setHint(pref2.getString("description", null));
 
 
         SharedPreferences sharedPref2 = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor2 = sharedPref2.edit();
         editor2.putString("description", editText2.getText().toString());
         editor2.commit();
+        TextView myTV2 = switcher2.findViewById(R.id.descriptionView);
+        myTV2.setText(pref2.getString("description", "def"));
 
-//        Fragment frg = .getSupportFragmentManager().findFragmentByTag("Your_Fragment_TAG");
-//        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//        ft.detach(frg);
-//        ft.attach(frg);
-//        ft.commit();
     }
 
     public interface OnNextClickListener {
