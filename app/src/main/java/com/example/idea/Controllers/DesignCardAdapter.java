@@ -13,6 +13,7 @@ import com.google.firebase.firestore.Query;
 
 public class DesignCardAdapter extends FirestoreAdapter<DesignCardAdapter.ViewHolder> {
 
+    private static final String TAG = "DesignCardAdapter";
     private FirebaseFirestore db;
 
     public DesignCardAdapter(Query query) {
@@ -43,6 +44,7 @@ public class DesignCardAdapter extends FirestoreAdapter<DesignCardAdapter.ViewHo
     }
 
 
+
     private void paginate(final DocumentSnapshot last, final int limit) {
         final Query subset;
         if (last == null) {
@@ -56,7 +58,7 @@ public class DesignCardAdapter extends FirestoreAdapter<DesignCardAdapter.ViewHo
         getListChunkQuery(subset);
     }
 
-    public void getListChunkQuery(Query query) {
+    private void getListChunkQuery(Query query) {
         CollectionReference picturesRef = db.collection("pictures");
         Query firstQuery = picturesRef.orderBy("tags", Query.Direction.ASCENDING).limit(15);
     }

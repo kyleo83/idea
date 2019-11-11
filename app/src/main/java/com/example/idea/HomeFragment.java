@@ -63,14 +63,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         .setSwipeInMsgLayoutId(R.layout.swipe_right_view)
                         .setSwipeOutMsgLayoutId(R.layout.swipe_left_view));
 
-
-        for(Design design : Utils.loadDesigns(getActivity())){
-            mSwipeView.addView(new DesignCard(getActivity(), design, mSwipeView));
-        }
-        // TODO : switch these out after better data in => better data out
-//        for(Design design : loadAllDesigns(db)){
+//        for(Design design : Utils.loadDesigns(getActivity())){
 //            mSwipeView.addView(new DesignCard(getActivity(), design, mSwipeView));
 //        }
+
+        // TODO : switch these out after better data in => better data out
+        for (Design design : toDesigns(fetchAllDesignSnapshots(db))) {
+            mSwipeView.addView(new DesignCard(getActivity(), design, mSwipeView));
+        }
 
         v.findViewById(R.id.cancelBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,8 +132,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    public static List<Design> loadAllDesigns(FirebaseFirestore db) {
-        final List<Design> designs = new ArrayList<>();
+    private static List<QueryDocumentSnapshot> fetchAllDesignSnapshots(FirebaseFirestore db) {
+        final List<QueryDocumentSnapshot> results = new ArrayList<>();
         db.collection("pictures")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -142,16 +142,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                Design newDesign = document.toObject(Design.class);
-                                designs.add(newDesign);
+                                results.add(document);
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
-        return designs;
+        return results;
     }
 
-
+    public List<Design> toDesigns(List<QueryDocumentSnapshot> documentSnapshotList) {
+        List<Design> designs = new ArrayList<>();
+        for (QueryDocumentSnapshot doc : documentSnapshotList) {
+            String designId = doc.getString("id");
+            String tag = doc.getString("tag_id");
+            String picUrl = doc.getString("picture_url");
+            String textDescription = doc.getString("description");
+            Design newDesign = new Design(designId, tag, picUrl, textDescription);
+            designs.add(newDesign);
+        }
+        return designs;
+    }
 }

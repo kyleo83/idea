@@ -42,7 +42,7 @@ public class DesignCard {
         @Resolve
         private void onResolved(){
             Glide.with(mContext).load(mdesign.getUrl()).into(profileImageView);
-            nameAgeTxt.setText("#"+ mdesign.getName());
+            nameAgeTxt.setText("#" + mdesign.getTag());
         }
 
         @SwipeOut
