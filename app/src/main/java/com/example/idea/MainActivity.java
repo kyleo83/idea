@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.idea.Controllers.CacheManager;
-import com.example.idea.Types.RoomTags;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -42,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
-
-
 
     //declares variables for Tags, Navigation, DrawerLayout, and Toolbar
     private static final String TAG = "MainActivity";
@@ -68,8 +65,16 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         spinner = findViewById(R.id.spinner);
 
         //adds tags to spinner array
-        RoomTags.Tags tags = new RoomTags.Tags();
-        final ArrayList<String> tagList = new ArrayList<>((tags.getTags(db)));
+        final ArrayList<String> tagList = new ArrayList<>();
+        tagList.add("kitchen");
+        tagList.add("bathroom");
+        tagList.add("living room");
+        tagList.add("bedroom");
+        tagList.add("interior");
+        tagList.add("landscape");
+        tagList.add("architecture");
+        tagList.add("design");
+        spinner.setItems(tagList);
 
         //adds listener for selected tag
         spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
