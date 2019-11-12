@@ -44,8 +44,9 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.OnNextClickListener,
-        ProfileFragment.OnNextClickListener, OwnerFragment.OnNextClickListener,
-        AboutFragment.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
+        ProfileFragment.OnNextClickListener, ChangePasswordFragment.OnNextClickListener,
+        OwnerFragment.OnNextClickListener, AboutFragment.OnNextClickListener,
+        NavigationView.OnNavigationItemSelectedListener{
 
     public static final String ADMIN_EMAIL = "bentunigold@gmail.com";
     private SwipePlaceHolderView mSwipeView;
@@ -164,14 +165,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         auth = FirebaseAuth.getInstance();
         //get current user and email
 
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        //hide or display Submission menu item in Navigation Drawer
-        if (user != null) {
-            email = user.getEmail();
-            Menu nav_Menu = navigationView.getMenu();
-            nav_Menu.findItem(R.id.nav_owner).setVisible(email.equals(ADMIN_EMAIL));
-        }
-        
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -182,6 +175,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                     // launch login activity
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
+                    //get current user and email
+                } else {
+                    email = user.getEmail();
+                    Menu nav_Menu = navigationView.getMenu();
+                    nav_Menu.findItem(R.id.nav_owner).setVisible(email.equals(ADMIN_EMAIL));
                 }
             }
         };
@@ -306,6 +304,17 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
                 newFragment = new ProfileFragment();
                 //removes spinner from profile fragment
+                spinner.setVisibility(View.GONE);
+                break;
+
+            case R.id.change_password:
+                Log.i(TAG, "change_password");
+                toast = Toast.makeText(this,
+                        "Change Password Fragment", Toast.LENGTH_SHORT);
+                toast.show();
+
+                newFragment = new ChangePasswordFragment();
+                //remove spinner from owner fragment
                 spinner.setVisibility(View.GONE);
                 break;
 
