@@ -1,11 +1,13 @@
 package com.example.idea;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.idea.Controllers.CacheManager;
 import com.example.idea.Types.Design;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 import com.mindorks.placeholderview.annotations.Layout;
@@ -32,23 +34,29 @@ public class DesignCard {
         private Design mdesign;
         private Context mContext;
         private SwipePlaceHolderView mSwipeView;
+        private SharedPreferences sharedPreferences;
 
         public DesignCard(Context context, Design design, SwipePlaceHolderView swipeView) {
             mContext = context;
             mdesign = design;
             mSwipeView = swipeView;
+            sharedPreferences = context.getSharedPreferences(CacheManager.PREF_NAME, CacheManager.PRIVATE_MODE);
         }
 
         @Resolve
         private void onResolved(){
             Glide.with(mContext).load(mdesign.getUrl()).into(profileImageView);
             nameAgeTxt.setText("#" + mdesign.getTag());
+            locationNameTxt.setText(mdesign.getTextDescription());
         }
 
         @SwipeOut
         private void onSwipedOut(){
             Log.d("EVENT", "onSwipedOut");
             mSwipeView.addView(this);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(CacheManager.KEY_DISLIKED, mdesign.getId());
+            editor.apply();
         }
 
         @SwipeCancelState
@@ -59,6 +67,9 @@ public class DesignCard {
         @SwipeIn
         private void onSwipeIn(){
             Log.d("EVENT", "onSwipedIn");
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(CacheManager.KEY_DISLIKED, mdesign.getId());
+            editor.apply();
         }
 
         @SwipeInState
@@ -70,5 +81,6 @@ public class DesignCard {
         private void onSwipeOutState(){
             Log.d("EVENT", "onSwipeOutState");
         }
+
     }
 

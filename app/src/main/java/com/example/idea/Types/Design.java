@@ -13,7 +13,7 @@ public class Design {
     @Expose
     private String designId;
 
-    @SerializedName("tag")
+    @SerializedName("tag_id")
     @Expose
     private String tag;
 

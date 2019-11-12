@@ -6,9 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.example.idea.MainActivity;
-
-import java.util.HashMap;
+import com.example.idea.LoginActivity;
+import com.example.idea.Types.User;
 
 public class CacheManager {
 
@@ -19,15 +18,19 @@ public class CacheManager {
     // Context
     Context _context;
     // Shared pref mode
-    int PRIVATE_MODE = 0;
+    public static final int PRIVATE_MODE = 0;
     // Shared pref file name
-    private static final String PREF_NAME = "AndroidPref";
+    public static final String PREF_NAME = "AndroidPref";
 
     // All Shared Preferences keys
     private static final String IS_LOGIN = "IsLoggedIn";
     // User name (make variable public to access from outside)
     public static final String KEY_NAME = "name";
     public static final String KEY_ID = "id";
+    public static final String KEY_LIKED = "LIKED";
+    public static final String KEY_DISLIKED = "DISLIKED";
+
+    public User currentUser;
 
     // Constructor
     public CacheManager() {}
@@ -40,14 +43,18 @@ public class CacheManager {
 
     /**
      * Create login session
+     * @param id int
+     * @param user User
      */
-    public void createLoginSession(int id, String name) {
+    public void createLoginSession(int id, User user) {
+        this.currentUser = user;
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
         // Storing name in pref
-        editor.putString(KEY_NAME, name);
+        editor.putString(KEY_NAME, user.getDisplayName());
         // Storing pictures seen
         editor.putInt(KEY_ID, id);
+        editor.putString("uid", user.getUid());
         // commit changes
         editor.commit();
     }
@@ -60,7 +67,7 @@ public class CacheManager {
         // Check login status
         if (!this.isLoggedIn()) {
             // user is not logged in redirect him to Login Activity
-            Intent i = new Intent(_context, MainActivity.class);
+            Intent i = new Intent(_context, LoginActivity.class);
             // Closing all the Activities
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -74,15 +81,11 @@ public class CacheManager {
     }
 
     /**
-     * Get stored session data
+     * Get stored session user data
+     * @return currentUser User
      */
-    public HashMap<String, String> getUserDetails() {
-        HashMap<String, String> user = new HashMap<String, String>();
-        // user name
-        user.put(KEY_NAME, pref.getString(KEY_NAME, null));
-
-        // return user
-        return user;
+    public User getUser() {
+        return currentUser;
     }
 
     /**
@@ -92,15 +95,15 @@ public class CacheManager {
         // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();
-
+        this.currentUser = null;
         // After logout redirect user to Login Activity
         checkLogin();
     }
 
     /**
      * Quick check for login
+     * @return boolean
      **/
-    // Get Login State
     public boolean isLoggedIn() {
         return pref.getBoolean(IS_LOGIN, false);
     }

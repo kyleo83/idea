@@ -37,11 +37,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         AboutFragment.OnNextClickListener, NavigationView.OnNavigationItemSelectedListener{
 
     public static final String ADMIN_EMAIL = "bentunigold@gmail.com";
+    public CacheManager cacheManager;
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
     
     private String email;
-    private CacheManager cacheManager; 
     private TextView emailView;
     private Button signOut;
     private FirebaseAuth.AuthStateListener authListener;
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = FirebaseFirestore.getInstance();
+        setCacheManager(new CacheManager(getApplicationContext()));
 
         //gets spinner reference
         spinner = findViewById(R.id.spinner);
@@ -371,8 +372,16 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
      * Catches NullPointerException.
      * @return String uid
      */
-    public static FirebaseUser getCurrentUser() {
+    public static FirebaseUser getCurrentFirebaseUser() {
         return FirebaseAuth.getInstance().getCurrentUser();
+    }
+
+    public void setCacheManager(CacheManager cacheManager) {
+        this.cacheManager = cacheManager;
+    }
+
+    public CacheManager getCacheManager() {
+        return cacheManager;
     }
 
 
