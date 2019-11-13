@@ -12,7 +12,7 @@ public class User {
     private String uid;
     private String displayName;
     private String email;
-    private SparseArray<String> ideasSeen;
+    private SparseArray<String> picturesSeen;
 
     private static final String LIKED_IDEA = "liked";
     private static final String DISLIKED_IDEA = "disliked";
@@ -31,7 +31,7 @@ public class User {
     // Guest user
     public User(String displayName) {
         setDisplayName(displayName);
-        newIdeasSeenTracker();
+        newPicturesSeenTracker();
     }
 
     public String getUid() {
@@ -43,16 +43,16 @@ public class User {
     }
 
     /**
-     * Creates sparsearray for tracking Ideas seen by User.
+     * Creates sparsearray for tracking pictures seen by User.
      */
-    public void newIdeasSeenTracker() {
-        this.ideasSeen = new SparseArray<>();
+    public void newPicturesSeenTracker() {
+        this.picturesSeen = new SparseArray<>();
         // entry 0 is their ID
-        this.ideasSeen.put(0, getUid());
+        this.picturesSeen.put(0, getUid());
     }
 
     public SparseArray getSeenMap() {
-        return ideasSeen;
+        return picturesSeen;
     }
 
     public String getDisplayName() {
@@ -69,26 +69,26 @@ public class User {
 
     /**
      * When User has swiped/selected Like on an Idea shown, it is added to
-     * ideasSeen as a "liked" photo.
-     * @param ideaId String
+     * picturesSeen as a "liked" photo.
+     * @param pictureId String
      */
-    public void setLikedIdea(int ideaId) {
-        if (ideasSeen == null) {
-            newIdeasSeenTracker();
+    public void setLikedPicture(int pictureId) {
+        if (picturesSeen == null) {
+            newPicturesSeenTracker();
         }
-        ideasSeen.put(ideaId, LIKED_IDEA);
+        picturesSeen.put(pictureId, LIKED_IDEA);
     }
 
     /**
      * When User has swiped/selected Like on an Idea shown, it is added to
-     * ideasSeen as a "disliked" photo.
-     * @param ideaId String
+     * picturesSeen as a "disliked" photo.
+     * @param pictureId String
      */
-    public void setDislikedIdea(int ideaId) {
-        if (ideasSeen == null) {
-            newIdeasSeenTracker();
+    public void setDislikedPicture(int pictureId) {
+        if (picturesSeen == null) {
+            newPicturesSeenTracker();
         }
-        ideasSeen.put(ideaId, DISLIKED_IDEA);
+        picturesSeen.put(pictureId, DISLIKED_IDEA);
     }
 
     public String getEmail() {
