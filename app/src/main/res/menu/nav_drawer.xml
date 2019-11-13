@@ -18,6 +18,11 @@
             android:title="Profile" />
 
         <item
+            android:id="@+id/change_password"
+            android:icon="@android:drawable/sym_action_chat"
+            android:title="Change Password" />
+
+        <item
             android:id="@+id/nav_owner"
             android:icon="@android:drawable/sym_action_chat"
             android:title="Submissions"/>
