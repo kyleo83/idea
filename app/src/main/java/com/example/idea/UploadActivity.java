@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -26,9 +26,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class UploadActivity extends AppCompatActivity {
-
+    private static final String TAG = "UploadActivity";
+    MaterialSpinner spinner;
     // Folder path for Firebase Storage.
     String Storage_Path = "All_Image_Uploads/";
 
@@ -39,8 +41,8 @@ public class UploadActivity extends AppCompatActivity {
     Button ChooseButton, UploadButton;
 
     // Creating EditText.
-    EditText ImageName ;
-
+    //EditText ImageName ;
+    String tag;
     // Creating ImageView.
     ImageView SelectImage;
 
@@ -72,8 +74,31 @@ public class UploadActivity extends AppCompatActivity {
         UploadButton = (Button)findViewById(R.id.ButtonUploadImage);
 
         // Assign ID's to EditText.
-        ImageName = (EditText)findViewById(R.id.ImageNameEditText);
+        //ImageName = (EditText)findViewById(R.id.ImageNameEditText);
+        //gets spinner reference
+        spinner = findViewById(R.id.uploadSpinner);
 
+        //adds tags to spinner array
+        final ArrayList<String> list = new ArrayList<>();
+        list.add("Kitchen");
+        list.add("Bathroom");
+        list.add("Livingroom");
+        list.add("Bedroom");
+        list.add("Interior");
+        list.add("Landscape");
+        list.add("Architecture");
+        list.add("Design");
+        spinner.setItems(list);
+
+
+        spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                Toast.makeText(UploadActivity.this, "Tag : " + list.get(position), Toast.LENGTH_SHORT).show();
+
+                tag = list.get(position);
+            }
+        });
         // Assign ID'S to image view.
         SelectImage = (ImageView)findViewById(R.id.ShowImageView);
 
@@ -124,7 +149,8 @@ public class UploadActivity extends AppCompatActivity {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), FilePathUri);
 
                 // Setting up bitmap selected image into ImageView.
-                SelectImage.setImageBitmap(bitmap);
+                //SelectImage.setImageBitmap(bitmap);
+                SelectImage.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 120, 120, false));
 
                 // After selecting image change choose button above text.
                 ChooseButton.setText("Image Selected");
@@ -170,8 +196,11 @@ public class UploadActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
+
+
+
                             // Getting image name from EditText and store into string variable.
-                            String TempImageName = ImageName.getText().toString().trim();
+                            //String TempImageName = ImageName.getText().toString().trim();
 
                             // Hiding the progressDialog after done uploading.
                             progressDialog.dismiss();
@@ -180,7 +209,7 @@ public class UploadActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
 
                             @SuppressWarnings("VisibleForTests")
-                            ImageUploadInfo imageUploadInfo = new ImageUploadInfo(TempImageName, taskSnapshot.getDownloadUrl().toString());
+                            ImageUploadInfo imageUploadInfo = new ImageUploadInfo(tag, taskSnapshot.getDownloadUrl().toString());
 
                             // Getting image upload ID.
                             String ImageUploadId = databaseReference.push().getKey();
