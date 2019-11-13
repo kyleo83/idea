@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class UploadActivity extends AppCompatActivity {
+    private static final String TAG = "UploadActivity";
     MaterialSpinner spinner;
     // Folder path for Firebase Storage.
     String Storage_Path = "All_Image_Uploads/";
