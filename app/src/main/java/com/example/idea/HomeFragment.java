@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import com.example.idea.Controllers.CacheManager;
 import com.example.idea.Controllers.DesignCardAdapter;
 import com.example.idea.Types.Design;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -152,7 +151,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             String textDescription = doc.getString("description");
             Design newDesign = new Design(designId, tag, picUrl, textDescription);
             designs.add(newDesign);
-            mSwipeView.addView(new DesignCard(getActivity(), newDesign, mSwipeView, shared));
+            mSwipeView.addView(new DesignCard(getActivity(), newDesign, mSwipeView));
 //            Log.i("How many designs now: ", String.valueOf(designs.size()));
         }
     }
