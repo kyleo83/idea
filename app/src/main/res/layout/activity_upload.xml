@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.idea.UploadActivity">
     <include
@@ -13,11 +13,11 @@
 
     <TextView
         android:id="@+id/textview"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         android:layout_alignParentTop="true"
-        android:layout_marginTop="102dp"
+        android:layout_marginTop="61dp"
         android:gravity="center"
         android:text="I*de*a Image Upload"
         android:textSize="20dp"
@@ -28,18 +28,31 @@
         android:layout_width="fill_parent"
         android:layout_height="250dp"
         android:layout_below="@+id/textview"
-        android:layout_marginTop="95dp" />
+        android:layout_marginTop="61dp" />
 
     <Button
         android:id="@+id/ButtonChooseImage"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="504dp"
+        android:layout_marginStart="-3dp"
+        android:layout_marginTop="408dp"
         android:text="Choose Image" />
+
+    <Button
+        android:id="@+id/ButtonUploadImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+
+        android:layout_alignTop="@+id/toolbar"
+        android:layout_alignParentStart="true"
+
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="462dp"
+        android:text="Upload image" />
 
     <com.jaredrummler.materialspinner.MaterialSpinner
         android:id="@+id/uploadSpinner"
@@ -48,21 +61,11 @@
 
         android:layout_alignTop="@+id/textview"
 
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="0dp"
+
+        android:layout_marginTop="34dp"
+
         android:textColor="@color/cardview_dark_background"
-        android:textSize="20dp" />
-
-    <Button
-        android:id="@+id/ButtonUploadImage"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="570dp"
-        android:text="Upload image" />
-
+        android:textSize="20sp" />
 
 
 </RelativeLayout>
