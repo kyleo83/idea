@@ -224,6 +224,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         transaction.commit();
     }
 
+
     @Override
     public void OnHomeFragmentNextClick(HomeFragment fragment) {
 
@@ -303,6 +304,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 toast.show();
 
                 newFragment = new ProfileFragment();
+
                 //removes spinner from profile fragment
                 spinner.setVisibility(View.GONE);
                 break;
