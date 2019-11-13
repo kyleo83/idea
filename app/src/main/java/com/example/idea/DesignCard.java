@@ -68,7 +68,7 @@ public class DesignCard {
         private void onSwipeIn(){
             Log.d("EVENT", "onSwipedIn");
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(CacheManager.KEY_DISLIKED, mdesign.getId());
+            editor.putString(CacheManager.KEY_LIKED, mdesign.getId());
             editor.apply();
         }
 
