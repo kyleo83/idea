@@ -1,12 +1,9 @@
 package com.example.idea;
 
 import android.content.Context;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-
-
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,26 +16,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.example.idea.Controllers.CacheManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import android.view.View;
-import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.Toolbar;
-
-
-
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
+
 import java.util.ArrayList;
 
 
@@ -49,18 +38,16 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         NavigationView.OnNavigationItemSelectedListener{
 
     public static final String ADMIN_EMAIL = "bentunigold@gmail.com";
+    public CacheManager cacheManager;
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
     
     private String email;
-    private CacheManager cacheManager; 
     private TextView emailView;
     private Button signOut;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
-
-
 
     //declares variables for Tags, Navigation, DrawerLayout, and Toolbar
     private static final String TAG = "MainActivity";
@@ -80,53 +67,54 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = FirebaseFirestore.getInstance();
+        setCacheManager(new CacheManager(getApplicationContext()));
 
         //gets spinner reference
         spinner = findViewById(R.id.spinner);
 
         //adds tags to spinner array
-        final ArrayList<String> list = new ArrayList<>();
-        list.add("Kitchen");
-        list.add("Bathroom");
-        list.add("Livingroom");
-        list.add("Bedroom");
-        list.add("Interior");
-        list.add("Landscape");
-        list.add("Architecture");
-        list.add("Design");
-        spinner.setItems(list);
+        final ArrayList<String> tagList = new ArrayList<>();
+        tagList.add("kitchen");
+        tagList.add("bathroom");
+        tagList.add("living room");
+        tagList.add("bedroom");
+        tagList.add("interior");
+        tagList.add("landscape");
+        tagList.add("architecture");
+        tagList.add("design");
+        spinner.setItems(tagList);
 
         //adds listener for selected tag
         spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                Toast.makeText(MainActivity.this, "Tag : " + list.get(position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Tag : " + tagList.get(position), Toast.LENGTH_SHORT).show();
 
                 //switches between spinner selections
-                String tag = list.get(position);
+                String tag = tagList.get(position);
                 switch (tag) {
-                    case "Kitchen":
+                    case "kitchen":
                         //Show kitchens
                         break;
-                    case "Bathroom":
+                    case "bathroom":
                         //Show Bathrooms
                         break;
-                    case "Livingroom":
+                    case "living room":
                         //Show Livingrooms
                         break;
-                    case "Bedroom":
+                    case "bedroom":
                         //Show Bedrooms
                         break;
-                    case "Interior":
+                    case "interior":
                         //Show Interiors
                         break;
-                    case "Landscape":
+                    case "landscape":
                         //Show Landscapes
                         break;
-                    case "Architecture":
+                    case "architecture":
                         //Show Architectures
                         break;
-                    case "Design":
+                    case "design":
                         //Show Designs
                         break;
                 }
@@ -146,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         fragmentTransaction.add(R.id.fragment_host, fragment);
         fragmentTransaction.commit();
 
-        drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle =
                 new ActionBarDrawerToggle(this, drawer, toolbar,
                         R.string.nav_open_drawer, R.string.nav_close_drawer
@@ -156,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         toggle.syncState();
 
 
-        navigationView = (NavigationView)findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         //end of fragment, navigation, and toolbar references
@@ -395,8 +383,16 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
      * Catches NullPointerException.
      * @return String uid
      */
-    public String getCurrentUserUid() {
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    public static FirebaseUser getCurrentFirebaseUser() {
+        return FirebaseAuth.getInstance().getCurrentUser();
+    }
+
+    public void setCacheManager(CacheManager cacheManager) {
+        this.cacheManager = cacheManager;
+    }
+
+    public CacheManager getCacheManager() {
+        return cacheManager;
     }
 
 
