@@ -66,7 +66,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
         SharedPreferences pref = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
 
-        if(pref.getString("name", null) != null || !pref.getString("name", null).equals("")){
+        if(pref.getString("name", null) != null ){
             ViewSwitcher switcher = view.findViewById(R.id.my_switcher);
             TextView myTV =  switcher.findViewById(R.id.nameView);
             myTV.setText(pref.getString("name", null));
@@ -74,7 +74,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
         SharedPreferences pref2 = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
 
-        if(pref2.getString("description", null) != null || !pref.getString("description", null).equals("")){
+        if(pref2.getString("description", null) != null){
             ViewSwitcher switcher2 = view.findViewById(R.id.my_switcher2);
             TextView myTV2 =  switcher2.findViewById(R.id.descriptionView);
             myTV2.setText(pref2.getString("description", null));
