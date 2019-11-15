@@ -9,12 +9,15 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,8 +30,12 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UploadActivity extends AppCompatActivity {
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "UploadActivity";
     MaterialSpinner spinner;
     // Folder path for Firebase Storage.
@@ -196,9 +203,6 @@ public class UploadActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-
-
-
                             // Getting image name from EditText and store into string variable.
                             //String TempImageName = ImageName.getText().toString().trim();
 
@@ -216,8 +220,29 @@ public class UploadActivity extends AppCompatActivity {
 
                             // Adding image upload id s child element into databaseReference.
                             databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
+
+                            //add to uploads collection with picture_url and tag_id
+                            Map<String, Object> photo = new HashMap<>();
+                            photo.put("picture_url", imageUploadInfo.imageURL);
+                            photo.put("tag_id", imageUploadInfo.imageName);
+
+                            db.collection("uploads").document()
+                                    .set(photo)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d(TAG, "DocumentSnapshot successfully written!");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w(TAG, "Error writing document", e);
+                                        }
+                                    });
                         }
                     })
+
                     // If something goes wrong .
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
