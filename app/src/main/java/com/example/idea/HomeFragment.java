@@ -143,6 +143,31 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 });
     }
 
+    private void fetchFilteredDesignSnapshots(FirebaseFirestore db,
+                                         final List<QueryDocumentSnapshot> results,
+                                         final List<Design> designs, String tag) {
+        Query query = db.collection("pictures");
+        designCardAdapter = new DesignCardAdapter(query);
+
+        query
+                .whereEqualTo("tag_id", tag)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                results.add(document);
+                            }
+                            toDesigns(results, designs);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
     public void toDesigns(List<QueryDocumentSnapshot> documentSnapshotList, List<Design> designs) {
         for (QueryDocumentSnapshot doc : documentSnapshotList) {
             String designId = doc.getString("id");
