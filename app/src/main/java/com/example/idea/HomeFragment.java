@@ -43,6 +43,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        Bundle bundle = getArguments();
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         mSwipeView = v.findViewById(R.id.swipeView);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -66,9 +67,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         // Load from Firestore and add to mSwipeView
         final List<QueryDocumentSnapshot> results = new ArrayList<>();
         final List<Design> designs = new ArrayList<>();
-        fetchAllDesignSnapshots(db, results, designs);
-        Log.i(TAG, "FETCH COMPLETE");
+        if (bundle != null && bundle.getString("filter_tag") != null) {
+            String tagFilter = bundle.getString("filter_tag");
+            fetchDesignSnapshotsFilteredBy(tagFilter, db, results, designs);
+            Log.i(TAG, tagFilter +" FETCH COMPLETE");
+        } else {
+            fetchAllDesignSnapshots(db, results, designs);
+            Log.i(TAG, "ALL FETCH COMPLETE");
+        }
 
+        // Swipes options
         v.findViewById(R.id.cancelBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +136,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private void fetchAllDesignSnapshots(FirebaseFirestore db,
                                          final List<QueryDocumentSnapshot> results,
                                          final List<Design> designs) {
+        results.clear();
         Query query = db.collection("pictures");
         designCardAdapter = new DesignCardAdapter(query);
 
@@ -137,7 +146,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                results.add(document);
+                            }
+                            toDesigns(results, designs);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void fetchDesignSnapshotsFilteredBy(@NonNull String tag, FirebaseFirestore db,
+                                                final List<QueryDocumentSnapshot> results,
+                                                final List<Design> designs) {
+        results.clear();
+        Query query = db.collection("pictures");
+        designCardAdapter = new DesignCardAdapter(query);
+
+        query.whereEqualTo("tag_id", tag)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
                                 results.add(document);
                             }
                             toDesigns(results, designs);

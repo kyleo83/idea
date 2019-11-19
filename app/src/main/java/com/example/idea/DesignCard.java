@@ -69,7 +69,9 @@ public class DesignCard {
             mContext = context;
             mdesign = design;
             mSwipeView = swipeView;
+
 //            sharedPreferences = context.getSharedPreferences(CacheManager.PREF_NAME, CacheManager.PRIVATE_MODE);
+
         }
 
         @Resolve

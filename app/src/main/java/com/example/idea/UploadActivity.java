@@ -9,12 +9,16 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,12 +31,14 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UploadActivity extends AppCompatActivity {
-    private static final String TAG = "UploadActivity";
+    String TAG ="";
     MaterialSpinner spinner;
     // Folder path for Firebase Storage.
-    String Storage_Path = "All_Image_Uploads/";
+    String Storage_Path = "All_Images/";
 
     // Root Database Name for Firebase Database.
     String Database_Path = "All_Image_Uploads_Database";
@@ -41,8 +47,9 @@ public class UploadActivity extends AppCompatActivity {
     Button ChooseButton, UploadButton;
 
     // Creating EditText.
-    //EditText ImageName ;
+    //tag id
     String tag;
+    int tagID;
     // Creating ImageView.
     ImageView SelectImage;
 
@@ -52,7 +59,7 @@ public class UploadActivity extends AppCompatActivity {
     // Creating StorageReference and DatabaseReference object.
     StorageReference storageReference;
     DatabaseReference databaseReference;
-
+    FirebaseFirestore db;
     // Image request code for onActivityResult() .
     int Image_Request_Code = 7;
 
@@ -68,7 +75,8 @@ public class UploadActivity extends AppCompatActivity {
 
         // Assign FirebaseDatabase instance with root database name.
         databaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
-
+        // assign db
+        db = FirebaseFirestore.getInstance();
         //Assign ID'S to button.
         ChooseButton = (Button)findViewById(R.id.ButtonChooseImage);
         UploadButton = (Button)findViewById(R.id.ButtonUploadImage);
@@ -95,8 +103,8 @@ public class UploadActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
                 Toast.makeText(UploadActivity.this, "Tag : " + list.get(position), Toast.LENGTH_SHORT).show();
-
                 tag = list.get(position);
+                tagID = position;
             }
         });
         // Assign ID'S to image view.
@@ -188,7 +196,7 @@ public class UploadActivity extends AppCompatActivity {
             progressDialog.show();
 
             // Creating second StorageReference.
-            StorageReference storageReference2nd = storageReference.child(Storage_Path + System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
+            final StorageReference storageReference2nd = storageReference.child(Storage_Path + System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
 
             // Adding addOnSuccessListener to second StorageReference.
             storageReference2nd.putFile(FilePathUri)
@@ -196,11 +204,37 @@ public class UploadActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
+                            storageReference2nd.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Uri downloadUrl = uri;
+                                    Toast.makeText(UploadActivity.this, "Upload Done", Toast.LENGTH_LONG).show();
+                                    //After upload Complete we have to store the Data to firestore.
+                                    Map<String, Object> picture = new HashMap<>();
+                                    picture.put("picture_url", downloadUrl.toString());
+                                    picture.put("tag_id", String.valueOf(tagID + 1));// We are using it as String because our data type in Firestore will be String
+                                    db.collection("pictures")
+                                            .add(picture)
+
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                @Override
+                                                public void onSuccess(DocumentReference documentReference) {
+                                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error writing document", e);
+                                                }
+                                            });
 
 
+                                }
 
-                            // Getting image name from EditText and store into string variable.
-                            //String TempImageName = ImageName.getText().toString().trim();
+                            });
+
+
 
                             // Hiding the progressDialog after done uploading.
                             progressDialog.dismiss();
@@ -216,6 +250,7 @@ public class UploadActivity extends AppCompatActivity {
 
                             // Adding image upload id s child element into databaseReference.
                             databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
+
                         }
                     })
                     // If something goes wrong .
@@ -249,5 +284,6 @@ public class UploadActivity extends AppCompatActivity {
         }
     }
 
-
 }
+
+
