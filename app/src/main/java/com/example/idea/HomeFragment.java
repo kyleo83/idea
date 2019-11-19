@@ -34,6 +34,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private DesignCardAdapter designCardAdapter;
     private SwipePlaceHolderView mSwipeView;
     Context context = getContext();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private static final String TAG = "HomeFragment";
 
@@ -149,12 +150,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     public void toDesigns(List<QueryDocumentSnapshot> documentSnapshotList, List<Design> designs) {
         for (QueryDocumentSnapshot doc : documentSnapshotList) {
-            String designId = doc.getString("id");
+            String designId = doc.getId();
             String tag = doc.getString("tag_id");
             String picUrl = doc.getString("picture_url");
             String textDescription = doc.getString("description");
             Design newDesign = new Design(designId, tag, picUrl, textDescription);
             designs.add(newDesign);
+
             mSwipeView.addView(new DesignCard(getActivity(), newDesign, mSwipeView));
 //            Log.i("How many designs now: ", String.valueOf(designs.size()));
         }

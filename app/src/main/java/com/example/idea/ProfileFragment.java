@@ -296,9 +296,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     private void fetchAllDesignSnapshots(FirebaseFirestore db,
                                          final List<QueryDocumentSnapshot> results,
                                          final List<Design> designs) {
-        Query query = db.collection("pictures");
+
+        Query query = db.collection("saved").whereEqualTo("savedUser", auth.getUid());
         designCardAdapter = new DesignCardAdapter(query);
 
+        Log.i(TAG, "fetchAllDesignSnapshots: ");
         query.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -306,6 +308,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 //                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Log.i(TAG, "onComplete: success");
                                 results.add(document);
                             }
                             toDesigns(results, designs);
@@ -317,10 +320,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     }
     public void toDesigns(List<QueryDocumentSnapshot> documentSnapshotList, List<Design> designs) {
         for (QueryDocumentSnapshot doc : documentSnapshotList) {
-            String designId = doc.getString("id");
-            String tag = doc.getString("tag_id");
-            String picUrl = doc.getString("picture_url");
-            String textDescription = doc.getString("description");
+            String designId = doc.getString("savedID");
+            String tag = doc.getString("savedTAG");
+            String picUrl = doc.getString("savedURL");
+            String textDescription = "";
             Design newDesign = new Design(designId, tag, picUrl, textDescription);
             designs.add(newDesign);
             mSwipeView.addView(new DesignCard(getActivity(), newDesign, mSwipeView));
