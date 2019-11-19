@@ -25,6 +25,7 @@ import com.example.idea.Controllers.CacheManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 
@@ -67,6 +68,15 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = FirebaseFirestore.getInstance();
+
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+        db.setFirestoreSettings(settings);
+
+
+
+
         setCacheManager(new CacheManager(getApplicationContext()));
 
         //gets spinner reference

@@ -2,6 +2,7 @@ package com.example.idea;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,6 +10,17 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.idea.Controllers.CacheManager;
 import com.example.idea.Types.Design;
+import com.example.idea.Types.Saved;
+import com.example.idea.Types.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 import com.mindorks.placeholderview.annotations.Layout;
 import com.mindorks.placeholderview.annotations.Resolve;
@@ -19,13 +31,29 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeInState;
 import com.mindorks.placeholderview.annotations.swipe.SwipeOut;
 import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 
+import static android.support.constraint.Constraints.TAG;
+
 
 @Layout(R.layout.card_view)
 public class DesignCard {
         @View(R.id.profileImageView)
         private ImageView profileImageView;
 
-        @View(R.id.nameAgeTxt)
+
+
+
+//        private FirebaseFirestore db;
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        private String uid = firebaseAuth.getUid();
+//        User user = new User();
+        String user;
+
+    @View(R.id.nameAgeTxt)
+
         private TextView nameAgeTxt;
 
         @View(R.id.locationNameTxt)
@@ -37,12 +65,13 @@ public class DesignCard {
         private SharedPreferences sharedPreferences;
 
         public DesignCard(Context context, Design design, SwipePlaceHolderView swipeView) {
+//            db = FirebaseFirestore.getInstance();
             mContext = context;
             mdesign = design;
             mSwipeView = swipeView;
-            if (context != null) {
-                sharedPreferences = context.getSharedPreferences(CacheManager.PREF_NAME, CacheManager.PRIVATE_MODE);
-            }
+
+//            sharedPreferences = context.getSharedPreferences(CacheManager.PREF_NAME, CacheManager.PRIVATE_MODE);
+
         }
 
         @Resolve
@@ -69,10 +98,74 @@ public class DesignCard {
         @SwipeIn
         private void onSwipeIn(){
             Log.d("EVENT", "onSwipedIn");
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(CacheManager.KEY_LIKED, mdesign.getId());
-            editor.apply();
+
+
+            switch(mSwipeView.getId()){
+                case R.id.swipeView:
+                    db.collection("users")
+                            .whereEqualTo("uid", uid)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Log.d(TAG, document.getId() + " => " + document.getData());
+                                            user = document.getReference().getId();
+                                            Log.i(TAG, "onComplete: "+ user);
+                                        }
+                                    } else {
+                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+
+                    Log.i(TAG, "onSwipeIn: 1");
+
+                    String designId = mdesign.getId();
+                    String tag = mdesign.getTag();
+                    Log.i(TAG, "onSwipeIn: 2");
+
+                    String pictureUrl = mdesign.getPictureUrl();
+                    String textDescription= mdesign.getTextDescription();
+                    String test = "test";
+
+                    Log.i(TAG, "onSwipeIn: 3" + designId + " / " + tag + " / " + pictureUrl + " / " + textDescription);
+
+                    Saved saved = new Saved(designId,  pictureUrl,  tag, firebaseAuth.getUid());
+                    Log.i(TAG, "onSwipeIn: 4 " + firebaseAuth.getUid());
+
+
+
+
+                    db.collection("saved")
+                            .add(saved)
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.i(TAG, "onFailure: ");
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.i(TAG, "onSuccess: ");
+                        }
+                    });
+
+
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(CacheManager.KEY_LIKED, mdesign.getId());
+                    editor.apply();
+                    break;
+//                case R.id.swipeView2:
+//                    break;
+            }
+
+
         }
+
+
 
         @SwipeInState
         private void onSwipeInState(){
