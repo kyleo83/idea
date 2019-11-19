@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
         //adds tags to spinner array
         final ArrayList<String> tagList = new ArrayList<>();
+        tagList.add("ALL");
         tagList.add("kitchen");
         tagList.add("bathroom");
         tagList.add("living room");
@@ -84,40 +85,31 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         tagList.add("design");
         spinner.setItems(tagList);
 
+
         //adds listener for selected tag
         spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
                 Toast.makeText(MainActivity.this, "Tag : " + tagList.get(position), Toast.LENGTH_SHORT).show();
 
+                HomeFragment fragment = new HomeFragment();
+                Bundle bundle = new Bundle();
+
+                //setup fragment manager
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
                 //switches between spinner selections
                 String tag = tagList.get(position);
-                switch (tag) {
-                    case "kitchen":
-                        //Show kitchens
-                        break;
-                    case "bathroom":
-                        //Show Bathrooms
-                        break;
-                    case "living room":
-                        //Show Livingrooms
-                        break;
-                    case "bedroom":
-                        //Show Bedrooms
-                        break;
-                    case "interior":
-                        //Show Interiors
-                        break;
-                    case "landscape":
-                        //Show Landscapes
-                        break;
-                    case "architecture":
-                        //Show Architectures
-                        break;
-                    case "design":
-                        //Show Designs
-                        break;
+                if (!tag.equalsIgnoreCase("ALL")) {
+                    bundle.putString("filter_tag", tag);
+                    fragment.setArguments(bundle);
+                    Log.i(TAG, "Filter by " + tag);
                 }
+
+                fragmentTransaction.add(R.id.fragment_host, fragment);
+                fragmentTransaction.commit();
+
             }
         });
 
@@ -127,12 +119,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //setup fragment manager
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        HomeFragment fragment = new HomeFragment();
-        fragmentTransaction.add(R.id.fragment_host, fragment);
-        fragmentTransaction.commit();
 
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle =
