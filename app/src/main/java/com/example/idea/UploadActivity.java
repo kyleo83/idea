@@ -55,6 +55,8 @@ public class UploadActivity extends AppCompatActivity {
     //tag id
     String tag;
     int tagID;
+   // tags list
+     ArrayList<String> tagList;
     // Creating ImageView.
     ImageView SelectImage;
 
@@ -92,7 +94,7 @@ public class UploadActivity extends AppCompatActivity {
         spinner = findViewById(R.id.uploadSpinner);
 
         //adds tags to spinner array
-        final ArrayList<String> tagList = new ArrayList<>();
+         tagList = new ArrayList<>();
         tagList.add("Kitchen");
         tagList.add("Bathroom");
         tagList.add("Livingroom");
@@ -101,7 +103,7 @@ public class UploadActivity extends AppCompatActivity {
         tagList.add("Landscape");
         tagList.add("Architecture");
         tagList.add("Design");
-        spinner.setItems(list);
+        spinner.setItems(tagList);
 
 
         spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
@@ -217,7 +219,7 @@ public class UploadActivity extends AppCompatActivity {
                                     //After upload Complete we have to store the Data to firestore.
                                     Map<String, Object> picture = new HashMap<>();
                                     picture.put("picture_url", downloadUrl.toString());
-                                    picture.put("tag_id", tagList[tagID]);// We are using it as String because our data type in Firestore will be String
+                                    picture.put("tag_id", tagList.get(tagID));// We are using it as String because our data type in Firestore will be String
                                     db.collection("uploads")
                                             .add(picture)
 
