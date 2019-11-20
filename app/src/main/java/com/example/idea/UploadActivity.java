@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -36,11 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UploadActivity extends AppCompatActivity {
-
-
-    private static final String TAG = "UploadActivity";
-
-
+    String TAG ="";
     MaterialSpinner spinner;
     // Folder path for Firebase Storage.
     String Storage_Path = "All_Images/";
@@ -92,23 +87,23 @@ public class UploadActivity extends AppCompatActivity {
         spinner = findViewById(R.id.uploadSpinner);
 
         //adds tags to spinner array
-        final ArrayList<String> tagList = new ArrayList<>();
-        tagList.add("Kitchen");
-        tagList.add("Bathroom");
-        tagList.add("Livingroom");
-        tagList.add("Bedroom");
-        tagList.add("Interior");
-        tagList.add("Landscape");
-        tagList.add("Architecture");
-        tagList.add("Design");
+        final ArrayList<String> list = new ArrayList<>();
+        list.add("Kitchen");
+        list.add("Bathroom");
+        list.add("Livingroom");
+        list.add("Bedroom");
+        list.add("Interior");
+        list.add("Landscape");
+        list.add("Architecture");
+        list.add("Design");
         spinner.setItems(list);
 
 
         spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                Toast.makeText(UploadActivity.this, "Tag : " + tagList.get(position), Toast.LENGTH_SHORT).show();
-                tag = tagList.get(position);
+                Toast.makeText(UploadActivity.this, "Tag : " + list.get(position), Toast.LENGTH_SHORT).show();
+                tag = list.get(position);
                 tagID = position;
             }
         });
@@ -217,8 +212,8 @@ public class UploadActivity extends AppCompatActivity {
                                     //After upload Complete we have to store the Data to firestore.
                                     Map<String, Object> picture = new HashMap<>();
                                     picture.put("picture_url", downloadUrl.toString());
-                                    picture.put("tag_id", tagList[tagID]);// We are using it as String because our data type in Firestore will be String
-                                    db.collection("uploads")
+                                    picture.put("tag_id", String.valueOf(tagID + 1));// We are using it as String because our data type in Firestore will be String
+                                    db.collection("pictures")
                                             .add(picture)
 
                                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -233,8 +228,6 @@ public class UploadActivity extends AppCompatActivity {
                                                     Log.w(TAG, "Error writing document", e);
                                                 }
                                             });
-
-
 
 
                                 }
@@ -258,10 +251,8 @@ public class UploadActivity extends AppCompatActivity {
                             // Adding image upload id s child element into databaseReference.
                             databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
 
-
                         }
                     })
-
                     // If something goes wrong .
                     .addOnFailureListener(new OnFailureListener() {
                         @Override

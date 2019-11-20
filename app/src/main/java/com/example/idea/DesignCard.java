@@ -70,9 +70,7 @@ public class DesignCard {
             mdesign = design;
             mSwipeView = swipeView;
 
-            if (context != null)
-                sharedPreferences = context.getSharedPreferences(CacheManager.PREF_NAME, CacheManager.PRIVATE_MODE);
-
+//            sharedPreferences = context.getSharedPreferences(CacheManager.PREF_NAME, CacheManager.PRIVATE_MODE);
 
         }
 
