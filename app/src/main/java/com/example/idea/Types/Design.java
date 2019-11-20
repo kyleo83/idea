@@ -27,8 +27,11 @@ public class Design {
 
     private String autoId;
 
+
     // constructor
     public Design() {}
+
+
     public Design(String designId, String tag, String pictureUrl, String textDescription) {
         setId(designId);
         setTag(tag);
@@ -89,4 +92,7 @@ public class Design {
     public void setAutoId(String autoId) {
         this.autoId = autoId;
     }
+
+
+
 }

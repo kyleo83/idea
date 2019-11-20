@@ -8,11 +8,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.example.idea.Controllers.DesignCardAdapter;
 import com.example.idea.Types.Design;
@@ -33,6 +36,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private DesignCardAdapter designCardAdapter;
     private SwipePlaceHolderView mSwipeView;
     Context context = getContext();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private static final String TAG = "HomeFragment";
 
@@ -41,6 +45,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        Bundle bundle = getArguments();
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         mSwipeView = v.findViewById(R.id.swipeView);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -52,6 +57,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         mSwipeView.getBuilder()
                 .setDisplayViewCount(3)
+                .setIsUndoEnabled(true)
                 .setSwipeDecor(new SwipeDecor()
                         .setViewWidth(windowSize.x)
                         .setViewHeight(windowSize.y - bottomMargin)
@@ -64,19 +70,30 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         // Load from Firestore and add to mSwipeView
         final List<QueryDocumentSnapshot> results = new ArrayList<>();
         final List<Design> designs = new ArrayList<>();
-        fetchAllDesignSnapshots(db, results, designs);
-        Log.i(TAG, "FETCH COMPLETE");
+        if (bundle != null && bundle.getString("filter_tag") != null) {
+            String tagFilter = bundle.getString("filter_tag");
+            fetchDesignSnapshotsFilteredBy(tagFilter, db, results, designs);
+            Log.i(TAG, tagFilter +" FETCH COMPLETE");
+        } else {
+            fetchAllDesignSnapshots(db, results, designs);
+            Log.i(TAG, "ALL FETCH COMPLETE");
+        }
 
+        // Swipes options
         v.findViewById(R.id.cancelBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mSwipeView.doSwipe(false);
             }
+
         });
+
+
 
         v.findViewById(R.id.addBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 mSwipeView.doSwipe(true);
             }
         });
@@ -86,6 +103,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), UploadActivity.class)) ;
             }
+        });
+
+        v.findViewById(R.id.undoBtn).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View v) {
+                mSwipeView.undoLastSwipe();
+
+            }
+
         });
 
         return v;
@@ -123,6 +151,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private void fetchAllDesignSnapshots(FirebaseFirestore db,
                                          final List<QueryDocumentSnapshot> results,
                                          final List<Design> designs) {
+        results.clear();
         Query query = db.collection("pictures");
         designCardAdapter = new DesignCardAdapter(query);
 
@@ -132,7 +161,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                results.add(document);
+                            }
+                            toDesigns(results, designs);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void fetchDesignSnapshotsFilteredBy(@NonNull String tag, FirebaseFirestore db,
+                                                final List<QueryDocumentSnapshot> results,
+                                                final List<Design> designs) {
+        results.clear();
+        Query query = db.collection("pictures");
+        designCardAdapter = new DesignCardAdapter(query);
+
+        query.whereEqualTo("tag_id", tag)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
                                 results.add(document);
                             }
                             toDesigns(results, designs);
@@ -145,12 +199,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     public void toDesigns(List<QueryDocumentSnapshot> documentSnapshotList, List<Design> designs) {
         for (QueryDocumentSnapshot doc : documentSnapshotList) {
-            String designId = doc.getString("id");
+            String designId = doc.getId();
             String tag = doc.getString("tag_id");
             String picUrl = doc.getString("picture_url");
             String textDescription = doc.getString("description");
             Design newDesign = new Design(designId, tag, picUrl, textDescription);
             designs.add(newDesign);
+
             mSwipeView.addView(new DesignCard(getActivity(), newDesign, mSwipeView));
 //            Log.i("How many designs now: ", String.valueOf(designs.size()));
         }
