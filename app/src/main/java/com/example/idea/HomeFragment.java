@@ -11,9 +11,11 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.example.idea.Controllers.DesignCardAdapter;
 import com.example.idea.Types.Design;
@@ -55,6 +57,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         mSwipeView.getBuilder()
                 .setDisplayViewCount(3)
+                .setIsUndoEnabled(true)
                 .setSwipeDecor(new SwipeDecor()
                         .setViewWidth(windowSize.x)
                         .setViewHeight(windowSize.y - bottomMargin)
@@ -82,6 +85,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             public void onClick(View v) {
                 mSwipeView.doSwipe(false);
             }
+
         });
 
 
@@ -99,6 +103,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), UploadActivity.class)) ;
             }
+        });
+
+        v.findViewById(R.id.undoBtn).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View v) {
+                mSwipeView.undoLastSwipe();
+
+            }
+
         });
 
         return v;
