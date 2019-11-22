@@ -51,6 +51,8 @@ public class DesignCard {
         private String uid = firebaseAuth.getUid();
 //        User user = new User();
         String user;
+        String ref;
+
 
     @View(R.id.nameAgeTxt)
 
@@ -85,7 +87,35 @@ public class DesignCard {
 
         @SwipeOut
         private void onSwipedOut(){
-            Log.d("EVENT", "onSwipedOut");
+            switch(mSwipeView.getId()) {
+                case R.id.swipeView2:
+                    db.collection("saved")
+                            .whereEqualTo("savedID", mdesign.getId())
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Log.d(TAG, document.getId() + " => " + document.getData());
+                                            ref = document.getReference().getId();
+                                            db.collection("saved")
+                                                    .document(ref).delete();
+//                                            remove from list
+                                            Log.i(TAG, "onComplete: "+ ref);
+                                        }
+                                    } else {
+                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+
+                    Log.i(TAG, "onSwipedOut: " + ref);
+                    Log.i(TAG, "onSwipedOut: " + mdesign.getId());
+
+
+            }
+//            Log.d("EVENT", "onSwipedOut");
             mSwipeView.addView(this);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(CacheManager.KEY_DISLIKED, mdesign.getId());
@@ -122,20 +152,12 @@ public class DesignCard {
                                 }
                             });
 
-                    Log.i(TAG, "onSwipeIn: 1");
 
+                    Log.i(TAG, "onSwipeIn: " + user);
                     String designId = mdesign.getId();
                     String tag = mdesign.getTag();
-                    Log.i(TAG, "onSwipeIn: 2");
-
                     String pictureUrl = mdesign.getPictureUrl();
-                    String textDescription= mdesign.getTextDescription();
-                    String test = "test";
-
-                    Log.i(TAG, "onSwipeIn: 3" + designId + " / " + tag + " / " + pictureUrl + " / " + textDescription);
-
                     Saved saved = new Saved(designId,  pictureUrl,  tag, firebaseAuth.getUid());
-                    Log.i(TAG, "onSwipeIn: 4 " + firebaseAuth.getUid());
 
 
 
