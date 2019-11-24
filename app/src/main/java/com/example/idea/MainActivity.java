@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         NavigationView.OnNavigationItemSelectedListener{
 
     public static final String ADMIN_EMAIL = "bentunigold@gmail.com";
+    public static final String ADMIN = "admin@idea.com";
     public CacheManager cacheManager;
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
@@ -163,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 } else {
                     email = user.getEmail();
                     Menu nav_Menu = navigationView.getMenu();
-                    nav_Menu.findItem(R.id.nav_owner).setVisible(email.equals(ADMIN_EMAIL));
+                    nav_Menu.findItem(R.id.nav_owner).setVisible(email.equals(ADMIN_EMAIL) || email.equals(ADMIN));
                 }
             }
         };
