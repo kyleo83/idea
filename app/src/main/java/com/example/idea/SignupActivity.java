@@ -189,7 +189,7 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                        cacheManager.createLoginSession(Integer.parseInt(documentReference.getId()), user);
+                        cacheManager.createLoginSession(documentReference.getId(), user);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
