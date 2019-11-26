@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
         //adds tags to spinner array
         final ArrayList<String> tagList = new ArrayList<>();
+        tagList.add("<SELECT DESIGNS>");
         tagList.add("ALL");
         tagList.add("kitchen");
         tagList.add("bathroom");
