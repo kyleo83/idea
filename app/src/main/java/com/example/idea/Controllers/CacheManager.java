@@ -43,7 +43,7 @@ public class CacheManager {
 
     /**
      * Create login session
-     * @param id int
+     * @param id String
      * @param user User
      */
     public void createLoginSession(String id, User user) {
@@ -105,6 +105,6 @@ public class CacheManager {
      * @return boolean
      **/
     public boolean isLoggedIn() {
-        return pref.getBoolean(IS_LOGIN, false);
+        return pref.getBoolean(IS_LOGIN, true);
     }
 }
