@@ -79,13 +79,6 @@ public class OwnerFragment extends Fragment implements View.OnClickListener{
             }
         });
 
-        v.findViewById(R.id.uploadBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), UploadActivity.class));
-            }
-        });
-
         return v;
     }
 
@@ -140,13 +133,13 @@ public class OwnerFragment extends Fragment implements View.OnClickListener{
 
     private void toDesigns(List<QueryDocumentSnapshot> documentSnapshotList, List<Design> designs) {
         for (QueryDocumentSnapshot doc : documentSnapshotList) {
-            String designId = doc.getString("id");
+            String documentId = doc.getId();
             String tag = doc.getString("tag_id");
             String picUrl = doc.getString("picture_url");
             String textDescription = doc.getString("description");
-            Design newDesign = new Design(designId, tag, picUrl, textDescription);
+            Design newDesign = new Design(documentId, tag, picUrl, textDescription);
             designs.add(newDesign);
-            mSwipeView.addView(new DesignCard(getActivity(), newDesign, mSwipeView));
+            mSwipeView.addView(new OwnerCard(getActivity(), newDesign, mSwipeView));
         }
     }
 
