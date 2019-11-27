@@ -19,9 +19,11 @@ public class DesignCardAdapter extends FirestoreAdapter<DesignCardAdapter.ViewHo
     private static final String TAG = "DesignCardAdapter";
     private FirebaseFirestore db;
     private DesignCardAdapter.ClickListener mClickListener;
+    Query query;
 
     public DesignCardAdapter(Query query) {
         super(query);
+        this.query = query;
     }
 
     @Override
@@ -77,6 +79,7 @@ public class DesignCardAdapter extends FirestoreAdapter<DesignCardAdapter.ViewHo
     @Override
     protected void onDataChanged() {
         super.onDataChanged();
+
     }
 
 

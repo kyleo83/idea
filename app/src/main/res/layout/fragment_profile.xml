@@ -10,55 +10,14 @@
 
 
     <LinearLayout
+        android:layout_gravity="bottom"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:src="@drawable/pineapple"
-            />
 
 
         <ViewSwitcher
-            android:id="@+id/my_switcher"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp">
-
-            <TextView
-                android:id="@+id/nameView"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:fontFamily="@font/jomolhari"
-                android:text="John doe"
-                android:textSize="40dp" />
-
-            <EditText
-                android:id="@+id/nameViewEdit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="change name" />
-        </ViewSwitcher>
-
-
-            <TextView
-                android:id="@+id/tagView"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:fontFamily="@font/jomolhari"
-                android:text="This is my saved area"
-                android:textSize="20dp"
-                android:layout_margin="5dp"
-                />
-
-
-        <ViewSwitcher
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/my_switcher2"
             android:layout_width="match_parent"
             android:layout_margin="5dp"
@@ -67,9 +26,9 @@
             <TextView
                 android:id="@+id/descriptionView"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="100dp"
                 android:fontFamily="@font/jomolhari"
-                android:text="This is the description area"
+                android:hint="Name goes here"
                 android:textSize="25dp" />
 
             <EditText
@@ -89,9 +48,6 @@
         android:id="@+id/linearlayout"
         >
 
-        <!-- android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -100,14 +56,12 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     </LinearLayout>
-    <!--android:layout_marginTop="16dp" -->
-
 
 
     <com.mindorks.placeholderview.SwipePlaceHolderView
-        android:id="@+id/swipeView"
+        android:id="@+id/swipeView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
