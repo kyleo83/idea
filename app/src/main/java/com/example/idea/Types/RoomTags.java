@@ -1,17 +1,7 @@
 package com.example.idea.Types;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.HashMap;
 
 public class RoomTags {
 
@@ -30,33 +20,34 @@ public class RoomTags {
         this.roomTag = roomTag;
     }
 
-    public static class Tags {
-        private HashMap<String, String> tagList;
-
-        public Tags() {
-            this.tagList = new HashMap<>();
-        }
-
-        void getTagsFromStore(FirebaseFirestore firestore) {
-            firestore.collection("tags").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d(TAG, document.getString("id") + document.getId());
-                            tagList.put(document.getId(), document.getString("id"));
-                        }
-                        Log.d(TAG, tagList.toString());
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
-                    }
-                }
-            });
-        }
-
-        public HashMap<String, String> getTags(FirebaseFirestore db) {
-            getTagsFromStore(db);
-            return tagList;
-        }
-    }
+//    public static class Tags {
+//        private ArrayList<String> tagList;
+//
+//        public Tags() {
+//            this.tagList = new ArrayList<>();
+//        }
+//
+//        void getTagsFromStore(FirebaseFirestore firestore) {
+//            firestore.collection("tags").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                    if (task.isSuccessful()) {
+//                        for (QueryDocumentSnapshot document : task.getResult()) {
+//                            Log.d(TAG, document.getString("id") + document.getId());
+//                            tagList.add(document.getId());
+////                                    , document.getString("id"));
+//                        }
+//                        Log.d(TAG, tagList.toString());
+//                    } else {
+//                        Log.d(TAG, "Error getting documents: ", task.getException());
+//                    }
+//                }
+//            });
+//        }
+//
+//        public ArrayList<String> getTags(FirebaseFirestore db) {
+//            getTagsFromStore(db);
+//            return tagList;
+//        }
+//    }
 }
