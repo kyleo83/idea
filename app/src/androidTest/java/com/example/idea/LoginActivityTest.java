@@ -5,6 +5,10 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +28,19 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class LoginActivityTest {
 
     @Rule
-    public ActivityTestRule<SplashActivity> mActivityTestRule = new ActivityTestRule<>(SplashActivity.class);
+    public ActivityTestRule<LoginActivity> mActivityTestRule =
+            new ActivityTestRule<>(LoginActivity.class);
+
+    @Before
+    public void setUp() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+
+        if (user != null) {
+            onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+            onView(withText("Sign Out")).perform(click());
+        }
+    }
 
     @Test
     public void loginActivityTest() {
@@ -52,7 +68,6 @@ public class LoginActivityTest {
         }
 
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-
         onView(withText("Sign Out")).perform(click());
     }
 
@@ -170,7 +185,7 @@ public class LoginActivityTest {
     public void forgotPasswordTest() {
 
         try {
-            Thread.sleep(7000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -187,7 +202,7 @@ public class LoginActivityTest {
     public void forgotPasswordBackoutTest() {
 
         try {
-            Thread.sleep(7000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
