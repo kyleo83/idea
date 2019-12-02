@@ -30,8 +30,7 @@
         <item
             android:id="@+id/Signout"
             android:icon="@drawable/ic_close_black_24dp"
-            android:title="Signout"/>
-
+            android:title="Sign Out"/>
 
     </group>
 </menu>
