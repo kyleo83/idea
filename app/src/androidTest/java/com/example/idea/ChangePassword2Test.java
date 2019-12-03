@@ -22,7 +22,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class ChangePasswordTest {
+public class ChangePassword2Test {
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityTestRule =
