@@ -5,4 +5,5 @@
     android:background="@color/cardview_light_background"
     android:elevation="4dp"
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-    app:popupTheme="@color/cardview_light_background" />
+    app:popupTheme="@color/cardview_light_background"
+    app:title="some title"/>

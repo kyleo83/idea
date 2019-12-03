@@ -8,6 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -130,8 +131,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         //references widget for toolbar
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //add idea app icon inside the Toolbar
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.circleidea);
+        //reference drawer layout
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle =
                 new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -141,13 +145,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         //end of fragment, navigation, and toolbar references
-
-
+        
         auth = FirebaseAuth.getInstance();
         //get current user and email
 
@@ -228,14 +230,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
     public boolean onOptionsItemSelected(MenuItem item) {
         Toast toast;
         switch (item.getItemId()) {
-
+            /**
             case R.id.action_settings:
                 Log.i(TAG, "Settings clicked");
                 toast = Toast.makeText(this,
                         "Settings clicked", Toast.LENGTH_SHORT);
                 toast.show();
                 return true;
-
+            **/
             case R.id.action_share:
                 Log.i(TAG, "Share clicked");
                 toast = Toast.makeText(this,
