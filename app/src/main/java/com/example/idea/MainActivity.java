@@ -8,6 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         NavigationView.OnNavigationItemSelectedListener{
 
     public static final String ADMIN_EMAIL = "bentunigold@gmail.com";
+    public static final String ADMIN = "admin@idea.com";
     public CacheManager cacheManager;
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
 
         //adds tags to spinner array
         final ArrayList<String> tagList = new ArrayList<>();
+        tagList.add("<SELECT DESIGNS>");
         tagList.add("ALL");
         tagList.add("kitchen");
         tagList.add("bathroom");
@@ -128,8 +131,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         //references widget for toolbar
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //add idea app icon inside the Toolbar
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.circleidea);
+        //reference drawer layout
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle =
                 new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -139,13 +145,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         //end of fragment, navigation, and toolbar references
-
-
+        
         auth = FirebaseAuth.getInstance();
         //get current user and email
 
@@ -163,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
                 } else {
                     email = user.getEmail();
                     Menu nav_Menu = navigationView.getMenu();
-                    nav_Menu.findItem(R.id.nav_owner).setVisible(email.equals(ADMIN_EMAIL));
+                    nav_Menu.findItem(R.id.nav_owner).setVisible(email.equals(ADMIN_EMAIL) || email.equals(ADMIN));
                 }
             }
         };
@@ -226,14 +230,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnNe
     public boolean onOptionsItemSelected(MenuItem item) {
         Toast toast;
         switch (item.getItemId()) {
-
+            /**
             case R.id.action_settings:
                 Log.i(TAG, "Settings clicked");
                 toast = Toast.makeText(this,
                         "Settings clicked", Toast.LENGTH_SHORT);
                 toast.show();
                 return true;
-
+            **/
             case R.id.action_share:
                 Log.i(TAG, "Share clicked");
                 toast = Toast.makeText(this,

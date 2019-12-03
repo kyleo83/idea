@@ -37,6 +37,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
+import com.mindorks.placeholderview.SwipeViewBinder;
+import com.mindorks.placeholderview.listeners.ItemRemovedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,14 +81,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         view = inflater.inflate(R.layout.fragment_profile, container, false);
 
 
-        mSwipeView = view.findViewById(R.id.swipeView);
+        mSwipeView = view.findViewById(R.id.swipeView2);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
         int bottomMargin = Utils.dpToPx(160);
         WindowManager windowManager = getActivity().getWindowManager();
         Point windowSize = Utils.getDisplaySize(windowManager);
-
+        // Load from Firestore and add to mSwipeView
+        final List<QueryDocumentSnapshot> results = new ArrayList<>();
+        final List<Design> designs = new ArrayList<>();
         mSwipeView.getBuilder()
                 .setDisplayViewCount(3)
                 .setSwipeDecor(new SwipeDecor()
@@ -97,10 +101,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                         .setRelativeScale(0.01f)
                         .setSwipeInMsgLayoutId(R.layout.swipe_right_view)
                         .setSwipeOutMsgLayoutId(R.layout.swipe_left_view));
+//        mSwipeView.addItemRemoveListener(new ItemRemovedListener() {
+//            @Override
+//            public void onItemRemoved(int count) {
+////                if (count == 0) mSwipeView.removeAllViews();
 
-        // Load from Firestore and add to mSwipeView
-        final List<QueryDocumentSnapshot> results = new ArrayList<>();
-        final List<Design> designs = new ArrayList<>();
+//                mSwipeView.remove
+//            }
+//        });
+//        mSwipeView.addItemRemoveListener(new ItemRemovedListener() {
+//            @Override
+//            public void onItemRemoved(int count) {
+//                mSwipeView.
+//                Log.i(TAG, "onItemRemoved: " + count);
+//            }
+//        });
+
+
         fetchAllDesignSnapshots(db, results, designs);
         Log.i(TAG, "FETCH COMPLETE");
 //
@@ -134,12 +151,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
 
         SharedPreferences pref = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
-
-        if(pref.getString("name", null) != null ){
-            ViewSwitcher switcher = view.findViewById(R.id.my_switcher);
-            TextView myTV =  switcher.findViewById(R.id.nameView);
-            myTV.setText(pref.getString("name", null));
-        }
+//
+//        if(pref.getString("name", null) != null ){
+//            ViewSwitcher switcher = view.findViewById(R.id.my_switcher);
+//            TextView myTV =  switcher.findViewById(R.id.nameView);
+//            myTV.setText(pref.getString("name", null));
+//        }
 
         SharedPreferences pref2 = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
 
@@ -184,19 +201,19 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
 
     public void editButtonViewClicked() {
-        SharedPreferences pref = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
-        ViewSwitcher switcher = view.findViewById(R.id.my_switcher);
-        switcher.showNext(); //or switcher.showPrevious();
-        EditText editText = switcher.findViewById(R.id.nameViewEdit);
-        editText.setHint(pref.getString("name", null));
+//        SharedPreferences pref = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
+//        ViewSwitcher switcher = view.findViewById(R.id.my_switcher);
+//        switcher.showNext(); //or switcher.showPrevious();
+//        EditText editText = switcher.findViewById(R.id.nameViewEdit);
+//        editText.setHint(pref.getString("name", null));
 
 
-        SharedPreferences sharedPref = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("name", editText.getText().toString());
-        editor.commit();
-        TextView myTV =  switcher.findViewById(R.id.nameView);
-        myTV.setText(pref.getString("name", "def"));
+//        SharedPreferences sharedPref = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//        editor.putString("name", editText.getText().toString());
+//        editor.commit();
+//        TextView myTV =  switcher.findViewById(R.id.nameView);
+//        myTV.setText(pref.getString("name", "def"));
 
 
 

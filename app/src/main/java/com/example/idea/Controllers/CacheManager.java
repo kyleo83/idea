@@ -43,17 +43,17 @@ public class CacheManager {
 
     /**
      * Create login session
-     * @param id int
+     * @param id String
      * @param user User
      */
-    public void createLoginSession(int id, User user) {
+    public void createLoginSession(String id, User user) {
         this.currentUser = user;
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
         // Storing name in pref
         editor.putString(KEY_NAME, user.getDisplayName());
         // Storing pictures seen
-        editor.putInt(KEY_ID, id);
+        editor.putString(KEY_ID, id);
         editor.putString("uid", user.getUid());
         // commit changes
         editor.commit();
@@ -105,6 +105,6 @@ public class CacheManager {
      * @return boolean
      **/
     public boolean isLoggedIn() {
-        return pref.getBoolean(IS_LOGIN, false);
+        return pref.getBoolean(IS_LOGIN, true);
     }
 }

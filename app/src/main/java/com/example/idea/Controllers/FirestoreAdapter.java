@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
@@ -37,7 +38,7 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
             return;
         }
         final List<DocumentChange> changes = documentSnapshots.getDocumentChanges();
-        final DocumentSnapshot lastDocument = changes.get(changes.size() - 1).getDocument();
+//        final DocumentSnapshot lastDocument = changes.get(changes.size() - 1).getDocument();
 
         // Dispatch the event
         Log.d(TAG, "onEvent:numChanges:" + documentSnapshots.getDocumentChanges().size());
@@ -117,7 +118,12 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
     protected void onDocumentRemoved(DocumentChange change) {
         mSnapshots.remove(change.getOldIndex());
         notifyItemRemoved(change.getOldIndex());
+        Log.i(TAG, "onDocumentRemoved: ");
+
     }
+
+
+
 
     protected void onError(FirebaseFirestoreException e) {
         Log.w(TAG, "onError", e);
