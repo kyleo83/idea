@@ -43,5 +43,6 @@
     <string name="hint_new_password">New Password</string>
     <string name="hint_old_password">Current Password</string>
     <string name="wrong_password">Current password is incorrect.</string>
+    <string name="no_submissions">No Submissions</string>
 
 </resources>

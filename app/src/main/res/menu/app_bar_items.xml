@@ -7,8 +7,4 @@
         android:icon="@android:drawable/ic_menu_share"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/action_settings"
-        android:title="@string/app_bar_settings"
-        app:showAsAction="never" />
 </menu>
