@@ -19,19 +19,18 @@
 
         <item
             android:id="@+id/change_password"
-            android:icon="@android:drawable/sym_action_chat"
+            android:icon="@drawable/ic_edit_black_24dp"
             android:title="Change Password" />
 
         <item
             android:id="@+id/nav_owner"
-            android:icon="@android:drawable/sym_action_chat"
+            android:icon="@drawable/ic_image_black"
             android:title="Submissions"/>
 
         <item
             android:id="@+id/Signout"
             android:icon="@drawable/ic_close_black_24dp"
-            android:title="Signout"/>
-
+            android:title="Sign Out"/>
 
     </group>
 </menu>
