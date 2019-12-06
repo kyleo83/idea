@@ -5,7 +5,7 @@
 
 
 Description:
-	Allows user to select photos of liked interior home designs. User can like or dislike a design by swiping left (dislike) or right (like) on the photo. Liked photos are saved to the users preferences to be viewed later in their profile and shared with others.
+	Allows user to select photos of liked interior home designs. User can like or dislike a design by swiping left (dislike) or  right (like) on the photo. Liked photos are saved to the users preferences to be viewed later in their profile and shared with others.
 
 Installation:
 	Click on the Play Store app. Search from the “idea” application. Follow instructions to download and install application.
@@ -13,7 +13,7 @@ Installation:
 Login/ Set-up User:
 	User will need to create a valid login to use app. This is done by selecting “Don’t have an account? Sign up” and then submitting a valid email and password.
 	User with a valid account can login by entering their email and password.
-	If user cannot remember password select “Forgot your password?”. An email will be sent to your email address. Click on the link in the email and then enter a new password in the new webpage. You can now login with the new password.
+	If user cannot remember password select “Forgot your password?”. An email will be sent to your email address. Click on the link         in the email and then enter a new password in the new webpage. You can now login with the new password.
 
 Navigating the App:
 	To navigate through the app use the navigation drawer which is opened by tapping on the three horizontal bars in the upper left or by swiping right from the left edge of the screen. The following menu items will display:
